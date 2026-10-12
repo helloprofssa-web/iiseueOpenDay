@@ -14,7 +14,7 @@
         <span class="brand-mark" aria-hidden="true">O</span>
         <span>OPEN <strong>DAY</strong></span>
       </a>
-      <a class="header-link" href="/admin">Area organizzatori <span aria-hidden="true">↗</span></a>
+      <span class="header-links"><a class="header-link" href="/cancel">Annulla prenotazione</a><a class="header-link" href="/admin">Area organizzatori <span aria-hidden="true">↗</span></a></span>
     </header>
 
     <main>
@@ -82,6 +82,9 @@
             </label>
             <label class="full-width">Scuola di provenienza
               <input name="school" autocomplete="organization" maxlength="120" placeholder="Nome della scuola" required>
+            </label>
+            <label class="full-width">Email
+              <input name="email" type="email" autocomplete="email" maxlength="120" placeholder="La mail a cui riceverai il codice" required>
             </label>
           </div>
 

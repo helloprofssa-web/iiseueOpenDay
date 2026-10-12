@@ -1,7 +1,7 @@
 const bookingForm = document.querySelector("#booking-form");
 const formMessage = document.querySelector("#form-message");
 
-function showFormMessage(message, type = "error", code = "") {
+function showFormMessage(message, type = "error", code = "", link = null) {
   formMessage.replaceChildren();
   formMessage.className = `form-message ${type}`;
   const text = document.createElement("span");
@@ -12,6 +12,13 @@ function showFormMessage(message, type = "error", code = "") {
     codeLabel.className = "booking-code";
     codeLabel.textContent = code;
     formMessage.append(codeLabel);
+  }
+  if (link) {
+    const anchor = document.createElement("a");
+    anchor.className = "message-link";
+    anchor.href = link.href;
+    anchor.textContent = link.text;
+    formMessage.append(anchor);
   }
   formMessage.hidden = false;
 }
@@ -49,6 +56,7 @@ bookingForm.addEventListener("submit", async (event) => {
     firstName: values.get("firstName"),
     lastName: values.get("lastName"),
     school: values.get("school"),
+    email: values.get("email"),
     program: values.get("program"),
     turn: values.get("turn"),
     attendees: values.get("attendees"),
@@ -63,10 +71,14 @@ bookingForm.addEventListener("submit", async (event) => {
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || "Non è stato possibile completare la prenotazione.");
     bookingForm.reset();
+    const emailNote = result.emailSent
+      ? "Ti abbiamo inviato una mail di conferma."
+      : "Non siamo riusciti a inviarti la mail: salva il codice e il biglietto.";
     showFormMessage(
-      `Prenotazione confermata per ${result.attendees} ${result.attendees === 1 ? "persona" : "persone"}. Conserva il codice:`,
+      `Prenotazione confermata per ${result.attendees} ${result.attendees === 1 ? "persona" : "persone"}. ${emailNote} Conserva il codice:`,
       "success",
       result.code,
+      { href: `/ticket?code=${encodeURIComponent(result.code)}`, text: "Apri il biglietto con QR code ↗" },
     );
     await refreshAvailability();
     formMessage.scrollIntoView({ behavior: "smooth", block: "center" });

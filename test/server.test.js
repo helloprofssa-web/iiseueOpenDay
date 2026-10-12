@@ -22,6 +22,7 @@ before(async () => {
       PORT: "0",
       OPEN_DAY_ADMIN_KEY: adminKey,
       DATABASE_URL: "",
+      SMTP_HOST: "",
       POSTGRES_URL: "",
       OPEN_DAY_DB_PATH: "memory://",
     },
@@ -64,6 +65,7 @@ function booking(attendees, turn = 1) {
     firstName: "Ada",
     lastName: "Rossi",
     school: "Scuola media Galileo",
+    email: "Ada.Rossi@example.com",
     program: "tradizionale",
     turn: String(turn),
     attendees: String(attendees),
@@ -138,4 +140,50 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   response = await fetch(baseUrl);
   assert.equal(response.status, 200);
   assert.match(await response.text(), /Liceo scientifico/);
+});
+
+test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", async () => {
+  let response = await reserve(2, 2);
+  assert.equal(response.status, 201);
+  const { code, emailSent, ticketUrl } = await response.json();
+  assert.equal(emailSent, false);
+  assert.ok(ticketUrl.endsWith(`/ticket?code=${code}`));
+
+  response = await fetch(`${baseUrl}/api/ticket?code=${code.toLowerCase()}`);
+  assert.equal(response.status, 200);
+  const { ticket, qr } = await response.json();
+  assert.equal(ticket.lastName, "Rossi");
+  assert.match(qr, /^data:image\/png;base64,/);
+  response = await fetch(`${baseUrl}/api/ticket?code=0000000000`);
+  assert.equal(response.status, 404);
+
+  const checkIn = (value, key = adminKey) => fetch(`${baseUrl}/api/admin/checkin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-admin-key": key },
+    body: JSON.stringify({ code: value }),
+  });
+  assert.equal((await checkIn(code, "chiave-errata")).status, 401);
+  response = await checkIn(code);
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).alreadyCheckedIn, false);
+  response = await checkIn(code);
+  assert.equal((await response.json()).alreadyCheckedIn, true);
+  assert.equal((await checkIn("FFFFFFFFFF")).status, 404);
+
+  const cancel = (email) => fetch(`${baseUrl}/api/cancel`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, email }),
+  });
+  assert.equal((await cancel("altra@example.com")).status, 404);
+  assert.equal((await cancel("ada.rossi@EXAMPLE.com")).status, 200);
+  assert.equal((await cancel("ada.rossi@example.com")).status, 404);
+  assert.equal((await fetch(`${baseUrl}/api/ticket?code=${code}`)).status, 404);
+
+  response = await fetch(`${baseUrl}/api/reservations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...booking(1), email: "non-una-email" }),
+  });
+  assert.equal(response.status, 400);
 });

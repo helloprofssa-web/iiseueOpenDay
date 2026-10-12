@@ -460,6 +460,36 @@ select:disabled { color: #999; }
 .cancel-button:hover { background: #fbeae5; }
 .empty-state { padding: 26px; border: 1px dashed var(--line); color: var(--muted); font-size: 12px; text-align: center; }
 
+.header-links { display: flex; gap: 22px; }
+.message-link { display: inline-block; margin-top: 8px; color: inherit; font-weight: 600; }
+.checked-in { color: var(--green); font-weight: 600; }
+
+.verify-panel { display: grid; gap: 14px; margin-bottom: 41px; }
+.verify-form { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.verify-form input { flex: 1 1 200px; width: auto; text-transform: uppercase; }
+.verify-button { width: auto; margin: 0; min-width: 120px; justify-content: center; }
+.scan-video { width: 100%; max-height: 320px; background: #000; object-fit: cover; }
+.verify-result { display: grid; gap: 5px; padding: 16px 18px; border-left: 4px solid; font-size: 12px; line-height: 1.5; }
+.verify-result strong { font-family: "Manrope", sans-serif; font-size: 16px; }
+.verify-result.valid { border-color: var(--green); background: #edf5e3; color: var(--green-dark); }
+.verify-result.warning { border-color: #d49a2a; background: #fbf1d9; color: #7a5410; }
+.verify-result.invalid { border-color: #c2513b; background: #fbeae5; color: #843d2f; }
+
+.ticket { max-width: 420px; margin: 0 auto; padding: 32px; border: 1px solid var(--line); background: #fff; text-align: center; }
+.ticket h1 { margin-bottom: 4px; font-family: "Manrope", sans-serif; font-size: 28px; letter-spacing: -.04em; }
+.ticket-school { margin-bottom: 22px; color: var(--muted); font-size: 13px; }
+.ticket-qr { display: block; margin: 0 auto 10px; }
+.ticket-code { margin-bottom: 22px; font-family: "DM Mono", monospace; font-size: 20px; letter-spacing: .15em; }
+.ticket-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 20px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.ticket-details dt { color: var(--muted); font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.ticket-details dd { margin: 4px 0 0; font-size: 12px; font-weight: 600; }
+.ticket-help { color: var(--muted); font-size: 11px; }
+
+@media print {
+  .site-header, .site-footer, .ticket .submit-button { display: none; }
+  .ticket { border: 0; }
+}
+
 @media (max-width: 700px) {
   .site-header, .hero, .site-footer { width: min(100% - 38px, 540px); }
   .site-header { height: 70px; }

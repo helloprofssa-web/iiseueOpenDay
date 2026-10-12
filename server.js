@@ -10,6 +10,10 @@ const staticFiles = new Map([
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
   ["/admin", ["admin.html", "text/html; charset=utf-8"]],
   ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
+  ["/cancel", ["cancel.html", "text/html; charset=utf-8"]],
+  ["/ticket", ["ticket.html", "text/html; charset=utf-8"]],
+  ["/cancel.js", ["cancel.js", "text/javascript; charset=utf-8"]],
+  ["/ticket.js", ["ticket.js", "text/javascript; charset=utf-8"]],
   ["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
   ["/admin.js", ["admin.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
@@ -45,14 +49,22 @@ function readJson(request) {
 
 async function route(request, url) {
   if (request.method === "GET" && url.pathname === "/api/availability") return core.getAvailability();
-  if (request.method === "POST" && url.pathname === "/api/reservations") {
+  if (request.method === "GET" && url.pathname === "/api/ticket") {
+    return core.getTicket(url.searchParams.get("code"));
+  }
+  if (request.method === "POST" && ["/api/reservations", "/api/cancel", "/api/admin/checkin"].includes(url.pathname)) {
     let data;
     try {
       data = await readJson(request);
     } catch (error) {
       return { status: error.statusCode || 400, body: { error: error.message } };
     }
-    return core.createReservation(data);
+    if (url.pathname === "/api/cancel") return core.cancelReservation(data);
+    if (url.pathname === "/api/admin/checkin") return core.checkIn(request.headers, data);
+    const baseUrl = process.env.PUBLIC_URL
+      ? process.env.PUBLIC_URL.replace(/\/+$/, "")
+      : `http://${request.headers.host}`;
+    return core.createReservation(data, baseUrl);
   }
   if (request.method === "GET" && url.pathname === "/api/admin/reservations") {
     return core.listReservations(request.headers);
@@ -66,7 +78,11 @@ async function route(request, url) {
 
 const server = http.createServer(async (request, response) => {
   response.setHeader("X-Content-Type-Options", "nosniff");
-  response.setHeader("Content-Security-Policy", "default-src 'self'; frame-ancestors 'none'");
+  response.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; " +
+      "connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  );
   const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
 
   try {

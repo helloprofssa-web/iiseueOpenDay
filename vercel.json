@@ -2,7 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "outputDirectory": "public",
-  "rewrites": [{ "source": "/admin", "destination": "/admin.html" }],
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/cancel", "destination": "/cancel.html" },
+    { "source": "/ticket", "destination": "/ticket.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
