@@ -22,6 +22,11 @@ async function loadTicket() {
     document.querySelector("#ticket-program").textContent =
       ticket.program === "tradizionale" ? "Scientifico tradizionale" : "Scienze applicate";
     document.querySelector("#ticket").hidden = false;
+    if (new URLSearchParams(window.location.search).has("print")) {
+      const image = document.querySelector("#ticket-qr");
+      await image.decode().catch(() => {});
+      window.print();
+    }
   } catch (error) {
     showError(error.message);
   }

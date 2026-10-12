@@ -14,11 +14,13 @@ function showFormMessage(message, type = "error", code = "", link = null) {
     formMessage.append(codeLabel);
   }
   if (link) {
-    const anchor = document.createElement("a");
-    anchor.className = "message-link";
-    anchor.href = link.href;
-    anchor.textContent = link.text;
-    formMessage.append(anchor);
+    for (const item of [].concat(link)) {
+      const anchor = document.createElement("a");
+      anchor.className = "message-link";
+      anchor.href = item.href;
+      anchor.textContent = item.text;
+      formMessage.append(anchor);
+    }
   }
   formMessage.hidden = false;
 }
@@ -78,7 +80,10 @@ bookingForm.addEventListener("submit", async (event) => {
       `Prenotazione confermata per ${result.attendees} ${result.attendees === 1 ? "persona" : "persone"}. ${emailNote} Conserva il codice:`,
       "success",
       result.code,
-      { href: `/ticket?code=${encodeURIComponent(result.code)}`, text: "Apri il biglietto con QR code ↗" },
+      [
+        { href: `/ticket?code=${encodeURIComponent(result.code)}`, text: "Apri il biglietto con QR code ↗" },
+        { href: `/ticket?code=${encodeURIComponent(result.code)}&print=1`, text: "Stampa la prenotazione ↗" },
+      ],
     );
     await refreshAvailability();
     formMessage.scrollIntoView({ behavior: "smooth", block: "center" });
