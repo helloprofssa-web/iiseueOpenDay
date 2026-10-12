@@ -1,0 +1,13 @@
+{
+  "name": "open-day-bookings",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gestione delle prenotazioni per l'open day scolastico",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

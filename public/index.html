@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f2">
+    <title>Prenota il tuo Open Day</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Open Day, pagina iniziale">
+        <span class="brand-mark" aria-hidden="true">O</span>
+        <span>OPEN <strong>DAY</strong></span>
+      </a>
+      <a class="header-link" href="/admin">Area organizzatori <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="live-dot"></span> Porte aperte, idee in movimento</p>
+          <h1>Il tuo prossimo<br><span>inizia qui.</span></h1>
+          <p class="hero-description">Vieni a conoscere la nostra scuola, i laboratori e i percorsi del liceo scientifico. Ti aspettiamo!</p>
+          <div class="hero-note">
+            <span class="note-icon" aria-hidden="true">✳</span>
+            <p><strong>Due turni, posti limitati.</strong><br>La prenotazione è per te e per chi ti accompagna.</p>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-sun"></div>
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-sticker">LA SCUOLA<br>CHE IMMAGINI</div>
+          <div class="art-card">
+            <span class="art-card-kicker">IL FUTURO</span>
+            <span class="art-card-title">prende<br>forma <i>qui.</i></span>
+            <span class="art-card-doodle">↗</span>
+          </div>
+          <div class="art-spark spark-one">✳</div>
+          <div class="art-spark spark-two">✳</div>
+        </div>
+      </section>
+
+      <section class="booking-section" aria-labelledby="booking-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Un posto ti aspetta</p>
+            <h2 id="booking-title">Prenota la visita</h2>
+          </div>
+          <p class="section-aside">La prenotazione comprende lo studente e i suoi accompagnatori.</p>
+        </div>
+
+        <div class="capacity-grid" aria-label="Disponibilità dei turni">
+          <article class="capacity-card" data-turn-card="1">
+            <div class="capacity-top"><span>TURNO 01</span><span class="capacity-status" data-turn-status="1">Disponibilità...</span></div>
+            <div class="capacity-name">Primo turno</div>
+            <div class="capacity-bottom"><span><strong data-turn-available="1">—</strong> posti disponibili</span><span data-turn-booked="1">— / 100</span></div>
+            <div class="capacity-track"><span data-turn-bar="1"></span></div>
+          </article>
+          <article class="capacity-card capacity-card-alt" data-turn-card="2">
+            <div class="capacity-top"><span>TURNO 02</span><span class="capacity-status" data-turn-status="2">Disponibilità...</span></div>
+            <div class="capacity-name">Secondo turno</div>
+            <div class="capacity-bottom"><span><strong data-turn-available="2">—</strong> posti disponibili</span><span data-turn-booked="2">— / 100</span></div>
+            <div class="capacity-track"><span data-turn-bar="2"></span></div>
+          </article>
+        </div>
+        <p class="capacity-note">Ogni turno può accogliere al massimo 100 persone, accompagnatori inclusi.</p>
+
+        <form id="booking-form" class="booking-form">
+          <div class="form-heading">
+            <span class="step-number">01</span>
+            <div><h3>I tuoi dati</h3><p>Ci aiuteranno a preparare al meglio la visita.</p></div>
+          </div>
+          <div class="form-grid">
+            <label>Nome
+              <input name="firstName" autocomplete="given-name" maxlength="80" placeholder="Il tuo nome" required>
+            </label>
+            <label>Cognome
+              <input name="lastName" autocomplete="family-name" maxlength="80" placeholder="Il tuo cognome" required>
+            </label>
+            <label class="full-width">Scuola di provenienza
+              <input name="school" autocomplete="organization" maxlength="120" placeholder="Nome della scuola" required>
+            </label>
+          </div>
+
+          <div class="form-heading form-heading-spaced">
+            <span class="step-number">02</span>
+            <div><h3>Scegli il tuo percorso</h3><p>Quale indirizzo ti incuriosisce di più?</p></div>
+          </div>
+          <div class="choice-grid">
+            <label class="choice-card">
+              <input type="radio" name="program" value="tradizionale" required>
+              <span class="choice-indicator"></span>
+              <span><strong>Liceo scientifico</strong><small>Tradizionale</small></span>
+              <span class="choice-arrow" aria-hidden="true">↗</span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="program" value="applicate" required>
+              <span class="choice-indicator"></span>
+              <span><strong>Scienze applicate</strong><small>Laboratori e tecnologia</small></span>
+              <span class="choice-arrow" aria-hidden="true">↗</span>
+            </label>
+          </div>
+
+          <div class="form-heading form-heading-spaced">
+            <span class="step-number">03</span>
+            <div><h3>Organizziamo la visita</h3><p>Scegli il turno e indica quante persone sarete.</p></div>
+          </div>
+          <div class="form-grid">
+            <label>Turno
+              <select name="turn" required>
+                <option value="">Seleziona un turno</option>
+                <option value="1">Primo turno</option>
+                <option value="2">Secondo turno</option>
+              </select>
+            </label>
+            <label>Numero totale di persone
+              <select name="attendees" required>
+                <option value="1">1 — Vengo da solo/a</option>
+                <option value="2">2 — Con un genitore</option>
+                <option value="3">3 — Con entrambi i genitori</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="form-message" class="form-message" role="status" aria-live="polite" hidden></div>
+          <button class="submit-button" type="submit"><span>Conferma la prenotazione</span><span aria-hidden="true">↗</span></button>
+          <p class="privacy-note">I dati saranno utilizzati esclusivamente per organizzare l'Open Day.</p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Ci vediamo presto. <strong>Il tuo futuro è in buone mani.</strong></span>
+      <span>OPEN DAY · LICEO SCIENTIFICO</span>
+    </footer>
+  </body>
+</html>
