@@ -21,7 +21,9 @@ before(async () => {
       ...process.env,
       PORT: "0",
       OPEN_DAY_ADMIN_KEY: adminKey,
-      OPEN_DAY_DB_PATH: path.join(temporaryDirectory, "reservations.sqlite"),
+      DATABASE_URL: "",
+      POSTGRES_URL: "",
+      OPEN_DAY_DB_PATH: "memory://",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });

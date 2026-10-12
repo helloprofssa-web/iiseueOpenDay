@@ -4,25 +4,29 @@ Applicazione web per raccogliere e gestire le prenotazioni dell'open day scolast
 Ogni turno ammette al massimo 100 persone: nel conteggio rientrano lo studente e gli
 eventuali accompagnatori.
 
-## Avvio
+## Pubblicazione su Vercel
 
-Richiede Node.js 22.5 o successivo. Non sono necessarie dipendenze npm.
+1. Importa il repository su Vercel (nessuna impostazione di build particolare).
+2. Nel progetto apri **Storage** (o Marketplace) e collega un database **Neon Postgres**:
+   Vercel imposta da solo la variabile `DATABASE_URL`.
+3. In **Settings → Environment Variables** aggiungi `OPEN_DAY_ADMIN_KEY` con una chiave
+   lunga e casuale, usata per accedere a `/admin`.
+4. Esegui un nuovo deploy. La tabella delle prenotazioni viene creata automaticamente.
+
+## Sviluppo locale
+
+Richiede Node.js 22.5 o successivo.
 
 ```powershell
-$env:OPEN_DAY_ADMIN_KEY = "imposta-una-chiave-lunga-e-casuale"
+npm install
+$env:OPEN_DAY_ADMIN_KEY = "una-chiave-di-prova"
 npm start
 ```
 
-Apri `http://localhost:3000` per il modulo pubblico e `http://localhost:3000/admin`
-per l'area organizzatori. La chiave è richiesta solo nell'area amministrativa.
-
-## Dati e pubblicazione
-
-Le prenotazioni sono conservate in SQLite in `data/reservations.sqlite`. Per
-spostare il database, imposta `OPEN_DAY_DB_PATH` a un percorso persistente e
-scrivibile. `PORT` può essere impostata dal servizio di hosting. In produzione,
-configura `OPEN_DAY_ADMIN_KEY`, usa HTTPS e scegli un hosting Node.js che conservi
-i file del database tra i riavvii.
+Apri `http://localhost:3000` per il modulo e `http://localhost:3000/admin` per l'area
+organizzatori. Senza `DATABASE_URL` in locale viene usato un database Postgres
+incorporato, salvato in `data/pglite` (escluso da git). Impostando `DATABASE_URL` viene
+invece usato quel database. `npm test` esegue i test, anche sulla capienza.
 
 I turni sono chiamati “Primo turno” e “Secondo turno”; orari e date non sono
 configurati perché non specificati.
