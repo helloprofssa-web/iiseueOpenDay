@@ -51,7 +51,7 @@ $env:OPEN_DAY_CHECKIN_KEY = "CheckIn@Eu26!"
 $env:SMTP_HOST="smtp.office365.com"
 $env:SMTP_PORT="587"
 $env:SMTP_USER="smtp-openday@nomescuola.edu.it"
-$env:SMTP_PASS="pR8@zK3!wT6#nM9vX2"
+$env:SMTP_PASS="<password-smtp>"
 $env:MAIL_FROM="openday@nomescuola.edu.it"
 npm start
 ```
