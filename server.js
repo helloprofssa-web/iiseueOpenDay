@@ -89,6 +89,12 @@ const server = http.createServer(async (request, response) => {
     const result = await route(request, url);
     if (result) return sendJson(response, result);
 
+    if (request.method === "GET" && /^\/fonts\/[a-z0-9-]+\.woff2$/.test(url.pathname)) {
+      const content = await fs.readFile(path.join(__dirname, "public", url.pathname));
+      response.writeHead(200, { "Content-Type": "font/woff2", "Cache-Control": "public, max-age=86400" });
+      return response.end(content);
+    }
+
     if (request.method === "GET" && staticFiles.has(url.pathname)) {
       const [fileName, contentType] = staticFiles.get(url.pathname);
       const content = await fs.readFile(path.join(__dirname, "public", fileName));
