@@ -44,32 +44,19 @@ body {
   overflow-x: hidden;
   position: relative;
   color: var(--ink);
-  background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #f3e8ff 100%) fixed;
+  background: linear-gradient(to right, #d1344c 0, #ab2b3e 100%) fixed;
 }
 
-/* Bolle decorative che salgono sullo sfondo */
-body::before, body::after {
+/* Trama a croci sopra il gradiente rosso, come sul sito della scuola */
+body::before {
   content: "";
   position: fixed;
+  inset: 0;
   z-index: 0;
-  bottom: -160px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .3);
-  box-shadow: 0 8px 32px rgba(79, 70, 229, .08), inset 0 0 24px rgba(255, 255, 255, .85);
-  opacity: 0;
+  background: url("/hero-pattern.svg") 0 0 / 65px 65px;
+  opacity: .12;
   pointer-events: none;
-  animation: float-up 22s infinite ease-in;
 }
-
-body::before { left: 8%; width: 130px; height: 130px; }
-body::after { right: 10%; width: 200px; height: 200px; animation-duration: 30s; animation-delay: 6s; }
-
-@keyframes float-up {
-  0% { transform: translateY(0) scale(1) rotate(0); opacity: 0; }
-  10%, 90% { opacity: .5; }
-  100% { transform: translateY(-130vh) scale(1.3) rotate(360deg); opacity: 0; }
-}
-
 body > * { position: relative; z-index: 1; }
 
 a { color: inherit; }
@@ -78,7 +65,7 @@ h1, h2, h3, p { margin-top: 0; }
 .glass-card, .site-header, .admin-intro, .booking-section, .admin-panel, .ticket {
   border: 1px solid rgba(255, 255, 255, .7);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, .85);
+  background: rgba(255, 255, 255, .97);
   box-shadow: 0 10px 35px rgba(79, 70, 229, .06);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
@@ -171,48 +158,7 @@ main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
 .hero {
   margin-bottom: 20px;
   padding: 32px clamp(20px, 4vw, 40px);
-  border-left: 6px solid var(--indigo);
 }
-
-.hero.hero-red {
-  position: relative;
-  z-index: 0;
-  overflow: hidden;
-  border: 0;
-  border-radius: 1.25rem;
-  background: linear-gradient(to right, #d1344c 0, #ab2b3e 100%);
-  color: #fff;
-  box-shadow: 0 12px 32px rgba(171, 43, 62, .28);
-}
-
-.hero.hero-red::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url("/hero-pattern.svg") 0 0 / 65px 65px;
-  opacity: .12;
-}
-
-.hero.hero-red::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  right: -90px;
-  width: 312px;
-  height: 312px;
-  margin-top: -156px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, .18);
-  box-shadow: 0 0 0 28px rgba(255, 255, 255, .05), 0 0 0 29px rgba(255, 255, 255, .14), inset 0 0 0 28px rgba(255, 255, 255, .05);
-}
-
-.hero.hero-red h1,
-.hero.hero-red .hero-description,
-.hero.hero-red .hero-list,
-.hero.hero-red .hero-list strong { color: #fff; }
-.hero.hero-red .badge { background: rgba(255, 255, 255, .18); color: #fff; }
 
 h1 {
   margin-bottom: 14px;
@@ -399,16 +345,16 @@ select:disabled { color: #9ca3af; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, .85);
   font-size: 12px;
 }
 
-.site-footer strong { color: var(--indigo-dark); }
+.site-footer strong { color: #fff; }
 .site-footer a { text-decoration: none; }
-.site-footer a:hover { color: var(--indigo); }
+.site-footer a:hover { color: #fff; text-decoration: underline; }
 
 .admin-main { width: min(960px, calc(100% - 32px)); min-height: calc(100vh - 220px); margin: 0 auto; padding: 12px 0 40px; }
-.admin-intro { margin-bottom: 20px; padding: 28px clamp(20px, 4vw, 36px); border-left: 6px solid var(--indigo); }
+.admin-intro { margin-bottom: 20px; padding: 28px clamp(20px, 4vw, 36px); }
 .admin-intro h1 { margin-bottom: 10px; font-size: clamp(28px, 5vw, 40px); }
 .admin-intro > p:last-child { margin: 0; color: #4b5563; font-size: 15px; }
 
@@ -423,7 +369,7 @@ select:disabled { color: #9ca3af; }
   padding: clamp(18px, 4vw, 32px);
   border: 1px solid rgba(255, 255, 255, .7);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, .85);
+  background: rgba(255, 255, 255, .97);
   box-shadow: 0 10px 35px rgba(79, 70, 229, .06);
 }
 
