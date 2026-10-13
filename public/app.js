@@ -25,11 +25,47 @@ function showFormMessage(message, type = "error", code = "", link = null) {
   formMessage.hidden = false;
 }
 
+let deadlineMs = null;
+let clockOffset = 0;
+const countdownSection = document.querySelector("#countdown");
+
+function closeRegistrations() {
+  countdownSection.classList.add("is-closed");
+  document.querySelector("#countdown-title").textContent = "Iscrizioni chiuse";
+  document.querySelector("#countdown-note").textContent = "Il termine per prenotare era il 4 novembre.";
+  for (const el of document.querySelectorAll("[data-cd]")) el.textContent = "00";
+  for (const el of bookingForm.elements) el.disabled = true;
+}
+
+function tickCountdown() {
+  if (deadlineMs === null) return;
+  const left = deadlineMs - (Date.now() + clockOffset);
+  if (left <= 0) return closeRegistrations();
+  const parts = {
+    days: Math.floor(left / 86_400_000),
+    hours: Math.floor(left / 3_600_000) % 24,
+    minutes: Math.floor(left / 60_000) % 60,
+    seconds: Math.floor(left / 1000) % 60,
+  };
+  for (const [key, value] of Object.entries(parts)) {
+    const el = document.querySelector(`[data-cd="${key}"]`);
+    const text = String(value).padStart(2, "0");
+    if (el.textContent !== text) el.textContent = text;
+  }
+  countdownSection.classList.toggle("is-urgent", left < 3 * 86_400_000);
+  if (left < 86_400_000) document.querySelector("#countdown-note").textContent = "Ultime ore per iscriversi!";
+}
+
 async function refreshAvailability() {
   try {
     const response = await fetch("/api/availability");
     if (!response.ok) throw new Error("Non è stato possibile caricare i posti disponibili.");
-    const { turns } = await response.json();
+    const { turns, deadline, now } = await response.json();
+    if (deadline) {
+      deadlineMs = new Date(deadline).getTime();
+      clockOffset = new Date(now).getTime() - Date.now();
+      tickCountdown();
+    }
     for (const turn of turns) {
       document.querySelector(`[data-turn-available="${turn.turn}"]`).textContent = turn.available;
       document.querySelector(`[data-turn-booked="${turn.turn}"]`).textContent = `${turn.booked} / ${turn.capacity}`;
@@ -96,4 +132,5 @@ bookingForm.addEventListener("submit", async (event) => {
 });
 
 refreshAvailability();
+window.setInterval(tickCountdown, 1000);
 window.setInterval(refreshAvailability, 30_000);
