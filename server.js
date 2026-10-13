@@ -21,6 +21,7 @@ const staticFiles = new Map([
   ["/hero-pattern.svg", ["hero-pattern.svg", "image/svg+xml"]],
   ["/decorazione-1.svg", ["decorazione-1.svg", "image/svg+xml"]],
   ["/decorazione-2.svg", ["decorazione-2.svg", "image/svg+xml"]],
+  ["/scienze-applicate.png", ["scienze-applicate.png", "image/png"]],
 ]);
 
 function sendJson(response, result) {

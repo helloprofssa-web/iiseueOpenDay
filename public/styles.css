@@ -318,6 +318,7 @@ select:disabled { color: #9ca3af; }
 .choice-card strong { color: var(--indigo-dark); font-size: 15px; font-weight: 800; }
 .choice-card small { margin-top: 3px; color: var(--muted); font-size: 12px; }
 .choice-arrow { margin-left: auto; color: var(--indigo); font-size: 16px; }
+.choice-image { width: 96px; height: 96px; margin-left: auto; flex: none; object-fit: contain; }
 
 .form-message {
   margin-top: 18px;
