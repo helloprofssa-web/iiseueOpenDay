@@ -95,12 +95,26 @@ function stopScanning() {
 }
 
 async function startScanning() {
-  if (!("BarcodeDetector" in window) || !navigator.mediaDevices?.getUserMedia) {
-    showVerifyResult("warning", "Scansione non supportata", "Questo browser non legge i QR code: usa Chrome o inserisci il codice a mano.");
+  if (!navigator.mediaDevices?.getUserMedia) {
+    showVerifyResult("warning", "Fotocamera non disponibile", "La fotocamera richiede una connessione sicura (https): inserisci il codice a mano.");
     return;
   }
   try {
-    const detector = new BarcodeDetector({ formats: ["qr_code"] });
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    const nativeDetector = "BarcodeDetector" in window ? new BarcodeDetector({ formats: ["qr_code"] }) : null;
+    const detect = async () => {
+      if (nativeDetector) {
+        const codes = await nativeDetector.detect(scanVideo).catch(() => []);
+        if (codes.length > 0) return codes[0].rawValue;
+      }
+      if (!window.jsQR || !scanVideo.videoWidth) return null;
+      canvas.width = scanVideo.videoWidth;
+      canvas.height = scanVideo.videoHeight;
+      context.drawImage(scanVideo, 0, 0);
+      const image = context.getImageData(0, 0, canvas.width, canvas.height);
+      return window.jsQR(image.data, image.width, image.height)?.data || null;
+    };
     scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
     scanVideo.srcObject = scanStream;
     scanVideo.hidden = false;
@@ -108,15 +122,15 @@ async function startScanning() {
     scanToggle.textContent = "Ferma la fotocamera";
     scanTimer = window.setInterval(async () => {
       if (verifying) return;
-      const codes = await detector.detect(scanVideo).catch(() => []);
-      if (codes.length > 0) {
+      const value = await detect();
+      if (value) {
         stopScanning();
-        verifyCode(codes[0].rawValue);
+        verifyCode(value);
       }
     }, 400);
-  } catch {
+  } catch (error) {
     stopScanning();
-    showVerifyResult("warning", "Fotocamera non disponibile", "Consenti l'accesso alla fotocamera oppure inserisci il codice a mano.");
+    showVerifyResult("warning", "Fotocamera non disponibile", `Consenti l'accesso alla fotocamera oppure inserisci il codice a mano. (${error.name || "errore"})`);
   }
 }
 

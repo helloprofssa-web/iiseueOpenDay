@@ -17,6 +17,7 @@ const staticFiles = new Map([
   ["/ticket.js", ["ticket.js", "text/javascript; charset=utf-8"]],
   ["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
   ["/admin.js", ["admin.js", "text/javascript; charset=utf-8"]],
+  ["/jsqr.js", ["jsqr.js", "text/javascript; charset=utf-8"]],
   ["/xlsx.js", ["xlsx.js", "text/javascript; charset=utf-8"]],
   ["/checkin.js", ["checkin.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
