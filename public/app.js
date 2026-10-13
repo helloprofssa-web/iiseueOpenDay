@@ -32,7 +32,7 @@ const countdownSection = document.querySelector("#countdown");
 function closeRegistrations() {
   countdownSection.classList.add("is-closed");
   document.querySelector("#countdown-title").textContent = "Iscrizioni chiuse";
-  document.querySelector("#countdown-note").textContent = "Il termine per prenotare era il 4 novembre.";
+  document.querySelector("#countdown-note")?.replaceChildren("Il termine per prenotare era il 4 novembre.");
   for (const el of document.querySelectorAll("[data-cd]")) el.textContent = "00";
   for (const el of bookingForm.elements) el.disabled = true;
 }
@@ -53,7 +53,8 @@ function tickCountdown() {
     if (el.textContent !== text) el.textContent = text;
   }
   countdownSection.classList.toggle("is-urgent", left < 3 * 86_400_000);
-  if (left < 86_400_000) document.querySelector("#countdown-note").textContent = "Ultime ore per iscriversi!";
+  const note = document.querySelector("#countdown-note");
+  if (left < 86_400_000 && note) note.textContent = "Ultime ore per iscriversi!";
 }
 
 async function refreshAvailability() {
