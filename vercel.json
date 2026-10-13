@@ -4,6 +4,7 @@
   "outputDirectory": "public",
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/checkin", "destination": "/checkin.html" },
     { "source": "/cancel", "destination": "/cancel.html" },
     { "source": "/ticket", "destination": "/ticket.html" }
   ],

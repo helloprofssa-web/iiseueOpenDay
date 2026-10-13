@@ -9,6 +9,7 @@ const staticFiles = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
   ["/admin", ["admin.html", "text/html; charset=utf-8"]],
+  ["/checkin", ["checkin.html", "text/html; charset=utf-8"]],
   ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
   ["/cancel", ["cancel.html", "text/html; charset=utf-8"]],
   ["/ticket", ["ticket.html", "text/html; charset=utf-8"]],
@@ -16,6 +17,7 @@ const staticFiles = new Map([
   ["/ticket.js", ["ticket.js", "text/javascript; charset=utf-8"]],
   ["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
   ["/admin.js", ["admin.js", "text/javascript; charset=utf-8"]],
+  ["/checkin.js", ["checkin.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/logo.png", ["logo.png", "image/png"]],
   ["/hero-pattern.svg", ["hero-pattern.svg", "image/svg+xml"]],
@@ -59,7 +61,7 @@ async function route(request, url) {
   if (request.method === "GET" && url.pathname === "/api/ticket") {
     return core.getTicket(url.searchParams.get("code"));
   }
-  if (request.method === "POST" && ["/api/reservations", "/api/cancel", "/api/admin/checkin"].includes(url.pathname)) {
+  if (request.method === "POST" && ["/api/reservations", "/api/cancel", "/api/checkin"].includes(url.pathname)) {
     let data;
     try {
       data = await readJson(request);
@@ -67,7 +69,7 @@ async function route(request, url) {
       return { status: error.statusCode || 400, body: { error: error.message } };
     }
     if (url.pathname === "/api/cancel") return core.cancelReservation(data);
-    if (url.pathname === "/api/admin/checkin") return core.checkIn(request.headers, data);
+    if (url.pathname === "/api/checkin") return core.checkIn(request.headers, data);
     const baseUrl = process.env.PUBLIC_URL
       ? process.env.PUBLIC_URL.replace(/\/+$/, "")
       : `http://${request.headers.host}`;

@@ -45,18 +45,6 @@
         </div>
         <div id="admin-capacity" class="capacity-grid admin-capacity-grid"></div>
         <div class="admin-toolbar reservations-toolbar">
-          <div><h2>Verifica biglietto</h2><p class="admin-subtitle">Scansiona il QR code o inserisci il codice all'ingresso.</p></div>
-        </div>
-        <div class="verify-panel">
-          <video id="scan-video" class="scan-video" playsinline muted hidden></video>
-          <form id="verify-form" class="verify-form">
-            <input id="verify-code" name="code" maxlength="10" autocomplete="off" placeholder="Codice di prenotazione" aria-label="Codice di prenotazione" required>
-            <button class="submit-button verify-button" type="submit"><span>Verifica</span></button>
-            <button id="scan-toggle" class="text-button" type="button">Scansiona con la fotocamera</button>
-          </form>
-          <div id="verify-result" class="verify-result" role="status" aria-live="polite" hidden></div>
-        </div>
-        <div class="admin-toolbar reservations-toolbar">
           <div><h2>Elenco prenotazioni</h2><p class="admin-subtitle">Più recenti per prime</p></div>
           <span id="reservation-count" class="reservation-count"></span>
         </div>

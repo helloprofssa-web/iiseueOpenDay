@@ -8,6 +8,7 @@ const { after, before, test } = require("node:test");
 
 const projectRoot = path.resolve(__dirname, "..");
 const adminKey = "test-admin-key-for-open-day";
+const checkinKey = "test-checkin-key-for-open-day";
 let child;
 let temporaryDirectory;
 let baseUrl;
@@ -21,6 +22,7 @@ before(async () => {
       ...process.env,
       PORT: "0",
       OPEN_DAY_ADMIN_KEY: adminKey,
+      OPEN_DAY_CHECKIN_KEY: checkinKey,
       DATABASE_URL: "",
       SMTP_HOST: "",
       POSTGRES_URL: "",
@@ -157,12 +159,14 @@ test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", 
   response = await fetch(`${baseUrl}/api/ticket?code=0000000000`);
   assert.equal(response.status, 404);
 
-  const checkIn = (value, key = adminKey) => fetch(`${baseUrl}/api/admin/checkin`, {
+  const checkIn = (value, key = checkinKey) => fetch(`${baseUrl}/api/checkin`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-admin-key": key },
+    headers: { "Content-Type": "application/json", "x-checkin-key": key },
     body: JSON.stringify({ code: value }),
   });
   assert.equal((await checkIn(code, "chiave-errata")).status, 401);
+  assert.equal((await checkIn(code, adminKey)).status, 401);
+  assert.equal((await checkIn(code, adminKey)).status, 401);
   response = await checkIn(code);
   assert.equal(response.status, 200);
   assert.equal((await response.json()).alreadyCheckedIn, false);

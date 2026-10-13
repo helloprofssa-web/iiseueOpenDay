@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#c0394d">
+    <meta name="robots" content="noindex">
+    <title>Check-in · Open Day</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/checkin.js" defer></script>
+  </head>
+  <body class="admin-page"><span class="decor decor-3" aria-hidden="true"></span><span class="decor decor-4" aria-hidden="true"></span>
+    <header class="site-header">
+      <a class="brand" href="/checkin" aria-label="Open Day, check-in">
+        <img class="brand-logo" src="/logo.png" alt="Istituto d'Istruzione Superiore Europa Unita, Lissone" width="930" height="220" />
+        <span class="brand-tag">OPEN <strong>DAY</strong></span>
+      </a>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-intro">
+        <p class="eyebrow">Check-in</p>
+        <h1>Ingresso <span>partecipanti.</span></h1>
+        <p>Verifica i biglietti all'ingresso scansionando il QR code o inserendo il codice.</p>
+      </section>
+
+      <section id="checkin-login-panel" class="admin-panel">
+        <h2>Accesso riservato</h2>
+        <p>Inserisci la password del check-in.</p>
+        <form id="checkin-login-form" class="admin-login-form">
+          <label for="checkin-key">Password check-in</label>
+          <input id="checkin-key" name="key" type="password" autocomplete="current-password" required>
+          <div id="checkin-login-message" class="form-message" role="alert" hidden></div>
+          <button class="submit-button" type="submit"><span>Accedi</span><span aria-hidden="true">↗</span></button>
+        </form>
+      </section>
+
+      <section id="checkin-panel" hidden>
+        <div class="admin-toolbar reservations-toolbar">
+          <div><h2>Verifica biglietto</h2><p class="admin-subtitle">Scansiona il QR code o inserisci il codice all'ingresso.</p></div>
+          <button id="checkin-logout" class="text-button" type="button">Esci</button>
+        </div>
+        <div class="verify-panel">
+          <video id="scan-video" class="scan-video" playsinline muted hidden></video>
+          <form id="verify-form" class="verify-form">
+            <input id="verify-code" name="code" maxlength="10" autocomplete="off" placeholder="Codice di prenotazione" aria-label="Codice di prenotazione" required>
+            <button class="submit-button verify-button" type="submit"><span>Verifica</span></button>
+            <button id="scan-toggle" class="text-button" type="button">Scansiona con la fotocamera</button>
+          </form>
+          <div id="verify-result" class="verify-result" role="status" aria-live="polite" hidden></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>OPEN DAY · <strong>Check-in</strong></span>
+    </footer>
+  </body>
+</html>

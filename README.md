@@ -10,7 +10,8 @@ eventuali accompagnatori.
 2. Nel progetto apri **Storage** (o Marketplace) e collega un database **Neon Postgres**:
    Vercel imposta da solo la variabile `DATABASE_URL`.
 3. In **Settings → Environment Variables** aggiungi `OPEN_DAY_ADMIN_KEY` con una chiave
-   lunga e casuale, usata per accedere a `/admin`.
+   lunga e casuale, usata per accedere a `/admin`. Aggiungi anche `OPEN_DAY_CHECKIN_KEY`,
+   una password **diversa** per lo staff che fa il check-in all'ingresso (`/checkin`).
 4. Configura l'invio delle email di conferma aggiungendo queste variabili (qualunque
    servizio SMTP va bene, ad esempio Gmail/Google Workspace con una *password per le app*,
    Brevo o Mailgun):
@@ -31,7 +32,7 @@ eventuali accompagnatori.
 
 - `/cancel`: il visitatore annulla la prenotazione con codice ed email.
 - `/ticket?code=…`: biglietto con QR code (il link è nella mail di conferma).
-- `/admin` → *Verifica biglietto*: scansione del QR con la fotocamera (Chrome/Android;
+- `/checkin` (password `OPEN_DAY_CHECKIN_KEY`): scansione del QR con la fotocamera (Chrome/Android;
   su altri browser si inserisce il codice a mano). Il primo controllo registra l'ingresso,
   un secondo controllo dello stesso biglietto mostra "Già entrato".
 
@@ -42,6 +43,7 @@ Richiede Node.js 22.5 o successivo.
 ```powershell
 npm install
 $env:OPEN_DAY_ADMIN_KEY = "openday26iiseue!"
+$env:OPEN_DAY_CHECKIN_KEY = "checkin26iiseue!"
 npm start
 ```
 
