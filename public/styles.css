@@ -57,6 +57,28 @@ body::before {
   opacity: .12;
   pointer-events: none;
 }
+
+/* Elementi decorativi della scuola che salgono lentamente sullo sfondo */
+body::after, html::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  bottom: -320px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0;
+  pointer-events: none;
+  animation: float-up 26s infinite ease-in;
+}
+
+body::after { left: 6%; width: 312px; height: 311px; background-image: url("/decorazione-1.svg"); }
+html::after { right: 8%; width: 102px; height: 114px; background-image: url("/decorazione-2.svg"); animation-duration: 20s; animation-delay: 5s; }
+
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0); opacity: 0; }
+  10%, 90% { opacity: .85; }
+  100% { transform: translateY(-130vh) rotate(360deg); opacity: 0; }
+}
 body > * { position: relative; z-index: 1; }
 
 a { color: inherit; }
@@ -436,7 +458,7 @@ select:disabled { color: #9ca3af; }
 
 @media print {
   body { background: #fff; }
-  body::before, body::after { display: none; }
+  body::before, body::after, html::after { display: none; }
   .site-header, .site-footer, .ticket .submit-button, .no-print { display: none !important; }
   .ticket { max-width: none; border: 0; box-shadow: none; background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .ticket-details { grid-template-columns: 1fr; }
