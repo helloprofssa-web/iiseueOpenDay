@@ -21,14 +21,9 @@ const staticFiles = new Map([
   ["/xlsx.js", ["xlsx.js", "text/javascript; charset=utf-8"]],
   ["/checkin.js", ["checkin.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
-  ["/logo.png", ["logo.png", "image/png"]],
-  ["/hero-pattern.svg", ["hero-pattern.svg", "image/svg+xml"]],
-  ["/decorazione-1.svg", ["decorazione-1.svg", "image/svg+xml"]],
-  ["/decorazione-2.svg", ["decorazione-2.svg", "image/svg+xml"]],
-  ["/scienze-applicate.png", ["scienze-applicate.png", "image/png"]],
-  ["/copertina.png", ["copertina.png", "image/png"]],
-  ["/liceo-tradizionale.png", ["liceo-tradizionale.png", "image/png"]],
 ]);
+
+const imageTypes = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp" };
 
 function sendJson(response, result) {
   response.writeHead(result.status, {
@@ -103,6 +98,12 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "GET" && /^\/fonts\/[a-z0-9-]+\.woff2$/.test(url.pathname)) {
       const content = await fs.readFile(path.join(__dirname, "public", url.pathname));
       response.writeHead(200, { "Content-Type": "font/woff2", "Cache-Control": "public, max-age=86400" });
+      return response.end(content);
+    }
+
+    if (request.method === "GET" && /^\/img\/[A-Za-z0-9_-]+\.(png|jpe?g|svg|webp)$/.test(url.pathname)) {
+      const content = await fs.readFile(path.join(__dirname, "public", url.pathname));
+      response.writeHead(200, { "Content-Type": imageTypes[path.extname(url.pathname)], "Cache-Control": "no-cache" });
       return response.end(content);
     }
 
