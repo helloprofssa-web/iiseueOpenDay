@@ -2,6 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "outputDirectory": "public",
+  "functions": { "api/send-tickets.js": { "maxDuration": 60 } },
+  "crons": [{ "path": "/api/send-tickets", "schedule": "0 6 * * *" }],
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/checkin", "destination": "/checkin.html" },

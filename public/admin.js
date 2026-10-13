@@ -176,6 +176,24 @@ document.querySelector("#admin-logout").addEventListener("click", () => {
   setMessage(loginMessage, "");
 });
 
+document.querySelector("#send-tickets").addEventListener("click", async (event) => {
+  if (!window.confirm("Inviare ora il biglietto via email a tutti gli iscritti che non l'hanno ancora ricevuto?")) return;
+  const button = event.currentTarget;
+  button.disabled = true;
+  try {
+    const response = await fetch("/api/send-tickets", { method: "POST", headers: { "x-admin-key": adminKey } });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Invio non riuscito.");
+    const failed = result.failed ? ` Non consegnati: ${result.failed}.` : "";
+    const remaining = result.remaining ? ` Ancora da inviare: ${result.remaining} (ripremi il pulsante).` : "";
+    setMessage(globalMessage, `Biglietti inviati: ${result.sent}.${failed}${remaining}`, result.failed ? "error" : "success");
+  } catch (error) {
+    setMessage(globalMessage, error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
+
 document.querySelector("#export-xlsx").addEventListener("click", () => {
   const turnName = (turn) => (turn === 1 ? "Primo turno" : "Secondo turno");
   const rows = [["Cognome", "Nome", "Scuola di provenienza", "Email", "Indirizzo", "Turno", "Persone", "Codice", "Iscritto il", "Ingresso"]];

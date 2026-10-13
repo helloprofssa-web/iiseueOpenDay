@@ -130,6 +130,11 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   });
   assert.equal(response.status, 409);
 
+  response = await fetch(`${baseUrl}/api/send-tickets`, { method: "POST" });
+  assert.equal(response.status, 401);
+  response = await fetch(`${baseUrl}/api/send-tickets`, { method: "POST", headers: { "x-admin-key": adminKey } });
+  assert.equal(response.status, 409);
+
   response = await fetch(`${baseUrl}/api/admin/reservations`);
   assert.equal(response.status, 401);
   response = await fetch(`${baseUrl}/api/admin/reservations`, {

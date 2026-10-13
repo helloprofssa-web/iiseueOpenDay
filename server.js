@@ -72,6 +72,12 @@ async function route(request, url) {
       : `http://${request.headers.host}`;
     return core.createReservation(data, baseUrl);
   }
+  if (["GET", "POST"].includes(request.method) && url.pathname === "/api/send-tickets") {
+    const baseUrl = process.env.PUBLIC_URL
+      ? process.env.PUBLIC_URL.replace(/\/+$/, "")
+      : `http://${request.headers.host}`;
+    return core.sendTickets(request.headers, baseUrl);
+  }
   if (request.method === "GET" && url.pathname === "/api/admin/reservations") {
     return core.listReservations(request.headers);
   }

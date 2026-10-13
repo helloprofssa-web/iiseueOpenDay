@@ -24,14 +24,18 @@ eventuali accompagnatori.
    | `MAIL_FROM` | `Open Day <openday@tuascuola.it>` |
    | `PUBLIC_URL` | `https://nome-progetto.vercel.app` (usato nei link delle email) |
 
-   Senza queste variabili le prenotazioni funzionano ma la mail non viene inviata; il
-   visitatore vede comunque codice e link al biglietto a schermo.
+   Senza queste variabili le prenotazioni funzionano ma le mail non vengono inviate.
+   Alla prenotazione parte una mail di conferma (senza biglietto); il biglietto con QR code
+   viene inviato quando le iscrizioni si chiudono, dal cron di Vercel (ogni giorno alle 06:00 UTC,
+   solo dopo la scadenza) oppure con il pulsante "Invia i biglietti" nell'area admin, che si può
+   ripremere per riprovare gli invii falliti. Per proteggere il cron aggiungi anche `CRON_SECRET`
+   (una stringa casuale): Vercel la invia da solo nelle chiamate del cron.
 5. Esegui un nuovo deploy. Le tabelle vengono create e aggiornate automaticamente.
 
 ## Funzioni per i visitatori e per lo staff
 
 - `/cancel`: il visitatore annulla la prenotazione con codice ed email.
-- `/ticket?code=…`: biglietto con QR code (il link è nella mail di conferma).
+- `/ticket?code=…`: biglietto con QR code (il link è nella mail con il biglietto).
 - `/checkin` (password `OPEN_DAY_CHECKIN_KEY`): scansione del QR con la fotocamera (Chrome/Android;
   su altri browser si inserisce il codice a mano). Il primo controllo registra l'ingresso,
   un secondo controllo dello stesso biglietto mostra "Già entrato".
@@ -44,8 +48,17 @@ Richiede Node.js 22.5 o successivo.
 npm install
 $env:OPEN_DAY_ADMIN_KEY = "openday26iiseue!"
 $env:OPEN_DAY_CHECKIN_KEY = "CheckIn@Eu26!"
+$env:SMTP_HOST="smtp.office365.com"
+$env:SMTP_PORT="587"
+$env:SMTP_USER="smtp-openday@nomescuola.edu.it"
+$env:SMTP_PASS="pR8@zK3!wT6#nM9vX2"
+$env:MAIL_FROM="openday@nomescuola.edu.it"
 npm start
 ```
+
+
+
+
 
 Apri `http://localhost:3000` per il modulo e `http://localhost:3000/admin` per l'area
 organizzatori. Senza `DATABASE_URL` in locale viene usato un database Postgres

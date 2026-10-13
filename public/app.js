@@ -112,16 +112,12 @@ bookingForm.addEventListener("submit", async (event) => {
     if (!response.ok) throw new Error(result.error || "Non è stato possibile completare la prenotazione.");
     bookingForm.reset();
     const emailNote = result.emailSent
-      ? "Ti abbiamo inviato una mail di conferma."
-      : "Non siamo riusciti a inviarti la mail: salva il codice e il biglietto.";
+      ? "Ti abbiamo inviato una mail di conferma: il biglietto con QR code arriverà via email alla chiusura delle iscrizioni."
+      : "Non siamo riusciti a inviarti la mail: salva il codice. Il biglietto ti sarà inviato alla chiusura delle iscrizioni.";
     showFormMessage(
       `Prenotazione confermata per ${result.attendees} ${result.attendees === 1 ? "persona" : "persone"}. ${emailNote} Conserva il codice:`,
       "success",
       result.code,
-      [
-        { href: `/ticket?code=${encodeURIComponent(result.code)}`, text: "Apri il biglietto con QR code ↗" },
-        { href: `/ticket?code=${encodeURIComponent(result.code)}&print=1`, text: "Stampa la prenotazione ↗" },
-      ],
     );
     await refreshAvailability();
     formMessage.scrollIntoView({ behavior: "smooth", block: "center" });
