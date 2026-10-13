@@ -1,7 +1,7 @@
 # Open Day
 
 Applicazione web per raccogliere e gestire le prenotazioni dell'open day scolastico.
-Ogni turno ammette al massimo 150 persone: nel conteggio rientrano lo studente e gli
+Ogni turno ammette al massimo 150 persone (modificabile con la variabile `OPEN_DAY_CAPACITY`): nel conteggio rientrano lo studente e gli
 eventuali accompagnatori.
 
 ## Pubblicazione su Vercel

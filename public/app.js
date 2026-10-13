@@ -69,7 +69,8 @@ async function refreshAvailability() {
     for (const turn of turns) {
       document.querySelector(`[data-turn-available="${turn.turn}"]`).textContent = turn.available;
       document.querySelector(`[data-turn-booked="${turn.turn}"]`).textContent = `${turn.booked} / ${turn.capacity}`;
-      document.querySelector(`[data-turn-bar="${turn.turn}"]`).style.width = `${turn.booked}%`;
+      document.querySelector(`[data-turn-bar="${turn.turn}"]`).style.width = `${Math.min(100, (turn.booked / turn.capacity) * 100)}%`;
+      document.querySelectorAll("[data-capacity]").forEach((element) => (element.textContent = turn.capacity));
       document.querySelector(`[data-turn-status="${turn.turn}"]`).textContent =
         turn.available === 0 ? "Posti esauriti" : "Prenotazioni aperte";
       document.querySelector(`[data-turn-card="${turn.turn}"]`).classList.toggle("is-full", turn.available === 0);
