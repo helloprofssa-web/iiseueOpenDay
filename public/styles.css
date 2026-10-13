@@ -424,8 +424,13 @@ select:disabled { color: #9ca3af; }
 .empty-state { padding: 26px; border: 2px dashed var(--line); border-radius: 1rem; color: var(--muted); font-size: 14px; text-align: center; }
 .checked-in { color: var(--green); font-weight: 700; }
 
-.verify-panel { display: grid; gap: 14px; }
+.verify-panel { display: grid; gap: 18px; }
 .verify-panel [hidden] { display: none; }
+.verify-option { display: grid; gap: 10px; padding: 20px; border: 1px solid var(--line); border-radius: 1rem; background: #fff; }
+.verify-option h3 { margin: 0; color: var(--indigo-dark); font-size: 18px; font-weight: 800; }
+.verify-option p { margin: 0; color: var(--muted); font-size: 13px; }
+.verify-divider { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+.verify-divider::before, .verify-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .verify-form { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .verify-form input { flex: 1 1 200px; width: auto; text-transform: uppercase; }
 .verify-button { width: auto; margin: 0; min-width: 120px; justify-content: center; }

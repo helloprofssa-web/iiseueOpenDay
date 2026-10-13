@@ -42,11 +42,20 @@
           <button id="checkin-logout" class="text-button" type="button">Esci</button>
         </div>
         <div class="verify-panel">
-          <video id="scan-video" class="scan-video" playsinline muted hidden></video>
-          <form id="verify-form" class="verify-form">
-            <input id="verify-code" name="code" maxlength="10" autocomplete="off" placeholder="Codice di prenotazione" aria-label="Codice di prenotazione" required>
-            <button class="submit-button verify-button" type="submit"><span>Verifica</span></button>
-            <button id="scan-toggle" class="text-button" type="button">Scansiona con la fotocamera</button>
+          <div class="verify-option">
+            <h3>Scansiona il QR code</h3>
+            <p>Inquadra il QR del biglietto con la fotocamera.</p>
+            <video id="scan-video" class="scan-video" playsinline muted hidden></video>
+            <button id="scan-toggle" class="submit-button verify-button" type="button"><span>Scansiona con la fotocamera</span></button>
+          </div>
+          <div class="verify-divider" aria-hidden="true"><span>oppure</span></div>
+          <form id="verify-form" class="verify-option">
+            <h3>Inserisci il codice</h3>
+            <p>Digita il codice di 10 caratteri riportato sul biglietto.</p>
+            <div class="verify-form">
+              <input id="verify-code" name="code" maxlength="10" autocomplete="off" placeholder="Codice di prenotazione" aria-label="Codice di prenotazione" required>
+              <button class="submit-button verify-button" type="submit"><span>Verifica</span></button>
+            </div>
           </form>
           <div id="verify-result" class="verify-result" role="status" aria-live="polite" hidden></div>
         </div>
