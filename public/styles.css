@@ -190,7 +190,7 @@ main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
   gap: 0;
 }
 .hero-text { flex: 1 1 auto; min-width: 0; padding: 32px clamp(20px, 4vw, 40px); }
-.hero-image { width: 240px; max-width: 28%; flex: none; align-self: stretch; height: auto; object-fit: cover; object-position: center bottom; }
+.hero-image { width: 380px; max-width: 42%; flex: none; align-self: stretch; height: auto; object-fit: cover; object-position: center bottom; }
 
 h1 {
   margin-bottom: 14px;
@@ -501,7 +501,7 @@ select:disabled { color: #9ca3af; }
   .form-grid, .choice-grid { margin-left: 0; }
   .site-footer { font-size: 11px; }
   .hero { flex-direction: column; }
-  .hero-image { width: 100%; max-width: none; height: 220px; align-self: auto; object-position: center 35%; }
+  .hero-image { width: 100%; max-width: none; height: 280px; align-self: auto; object-position: center 35%; }
   .countdown-unit { min-width: 58px; padding: 8px 6px; }
   .countdown-unit strong { font-size: 24px; }
   .countdown-grid { gap: 8px; }
