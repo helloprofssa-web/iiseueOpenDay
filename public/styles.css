@@ -98,7 +98,7 @@ h1, h2, h3, p { margin-top: 0; }
 .site-header {
   width: min(1120px, calc(100% - 32px));
   margin: 16px auto;
-  padding: 14px 20px;
+  padding: 22px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,7 +119,7 @@ h1, h2, h3, p { margin-top: 0; }
 
 .brand strong { color: var(--indigo); font-weight: 900; }
 
-.brand-logo { height: 64px; width: auto; display: block; mix-blend-mode: multiply; }
+.brand-logo { height: 88px; width: auto; display: block; mix-blend-mode: multiply; }
 
 .brand-tag {
   padding: 6px 16px;
@@ -146,12 +146,12 @@ h1, h2, h3, p { margin-top: 0; }
 .header-links { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .header-link {
-  min-height: 44px;
+  min-height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
-  border-radius: .75rem;
+  padding: 0 14px;
+  border-radius: .6rem;
   background: var(--indigo);
   color: #fff;
   font-size: 13px;
@@ -476,7 +476,7 @@ select:disabled { color: #9ca3af; }
 @media (max-width: 700px) {
   .site-header { padding: 12px 14px; }
   .brand { font-size: 17px; }
-  .brand-logo { height: 52px; }
+  .brand-logo { height: 64px; }
   .brand-tag { display: none; }
   .header-links { width: 100%; }
   .header-links .header-link { flex: 1 1 140px; }
