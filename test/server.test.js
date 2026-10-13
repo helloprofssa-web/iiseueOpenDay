@@ -119,7 +119,7 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   response = await fetch(`${baseUrl}/api/availability`);
   assert.deepEqual((await response.json()).turns.map(({ available }) => available), [0, 148]);
 
-  // Lo stesso studente non può prenotare anche l'altro turno (stesso nome o stessa email).
+  // Una stessa email non può prenotare anche l'altro turno; gli omonimi con email diversa sì.
   response = await reserve(1, 2, "-1");
   assert.equal(response.status, 409);
   assert.match((await response.json()).error, /già una prenotazione/);
