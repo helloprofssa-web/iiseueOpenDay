@@ -502,12 +502,11 @@ select:disabled { color: #9ca3af; }
 }
 
 @media print {
-  body { background: #fff; }
+  @page { margin: 12mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body::before, body::after, html::after, .decor { display: none; }
   .site-header, .site-footer, .ticket .submit-button, .no-print { display: none !important; }
-  .ticket { max-width: none; border: 0; box-shadow: none; background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .ticket-details { grid-template-columns: 1fr; }
-  .ticket-details dd { font-size: 18px; }
+  .ticket { box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; break-inside: avoid; }
 }
 
 @media (prefers-reduced-motion: reduce) {
