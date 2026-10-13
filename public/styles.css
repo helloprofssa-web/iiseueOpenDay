@@ -44,7 +44,7 @@ body {
   overflow-x: hidden;
   position: relative;
   color: var(--ink);
-  background: linear-gradient(to right, #d1344c 0, #ab2b3e 100%) fixed;
+  background: linear-gradient(to right, #dc4a60 0, #bf3c50 100%) fixed;
 }
 
 /* Trama a croci sopra il gradiente rosso, come sul sito della scuola */
