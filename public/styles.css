@@ -73,7 +73,8 @@ body::after, html::after, .decor {
 
 body::after { left: 6%; width: 312px; height: 311px; background-image: url("/decorazione-1.svg"); }
 html::after { right: 8%; width: 102px; height: 114px; background-image: url("/decorazione-2.svg"); animation-duration: 20s; animation-delay: 5s; }
-.decor-3 { left: 62%; width: 312px; height: 311px; background-image: url("/decorazione-1.svg"); animation-duration: 30s; animation-delay: 12s; }
+
+.decor-3 { left: 62%; width: 312px; height: 311px; background-image: url("/decorazione-1.svg"); animation-duration: 30s; animation-delay: 12s; }
 .decor-4 { right: 42%; width: 102px; height: 114px; background-image: url("/decorazione-2.svg"); animation-duration: 23s; animation-delay: 16s; }
 
 @keyframes float-up {
@@ -125,7 +126,7 @@ h1, h2, h3, p { margin-top: 0; }
   padding: 8px 22px;
   border-radius: 999px;
   background: #fdecef;
-  font-size: 30px;
+  font-size: 40px;
   letter-spacing: .04em;
   white-space: nowrap;
 }
@@ -384,12 +385,12 @@ select:disabled { color: #9ca3af; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 
-.admin-main { width: min(960px, calc(100% - 32px)); min-height: calc(100vh - 220px); margin: 0 auto; padding: 12px 0 40px; }
-.admin-intro { margin-bottom: 20px; padding: 28px clamp(20px, 4vw, 36px); }
+.admin-main { width: min(1120px, calc(100% - 32px)); min-height: calc(100vh - 220px); margin: 0 auto; padding: 12px 0 40px; }
+.admin-intro { width: 100%; margin-bottom: 20px; padding: 28px clamp(20px, 4vw, 36px); }
 .admin-intro h1 { margin-bottom: 10px; font-size: clamp(28px, 5vw, 40px); }
 .admin-intro > p:last-child { margin: 0; color: #4b5563; font-size: 15px; }
 
-.admin-panel { max-width: 520px; padding: 28px; }
+.admin-panel { width: 100%; padding: 28px; }
 .admin-panel h2 { margin-bottom: 8px; color: var(--indigo-dark); font-size: 21px; font-weight: 800; }
 .admin-panel > p, .admin-subtitle { margin: 0; color: var(--muted); font-size: 13px; }
 .admin-login-form { display: grid; gap: 8px; margin-top: 20px; }
