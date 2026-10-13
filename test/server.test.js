@@ -168,7 +168,7 @@ test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", 
   assert.equal(response.status, 201);
   const { code, emailSent, ticketUrl } = await response.json();
   assert.equal(emailSent, false);
-  assert.ok(ticketUrl.endsWith(`/ticket?code=${code}`));
+  assert.equal(ticketUrl, undefined);
 
   response = await fetch(`${baseUrl}/api/ticket?code=${code.toLowerCase()}`);
   assert.equal(response.status, 200);
