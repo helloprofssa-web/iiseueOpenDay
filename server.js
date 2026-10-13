@@ -22,6 +22,7 @@ const staticFiles = new Map([
   ["/decorazione-1.svg", ["decorazione-1.svg", "image/svg+xml"]],
   ["/decorazione-2.svg", ["decorazione-2.svg", "image/svg+xml"]],
   ["/scienze-applicate.png", ["scienze-applicate.png", "image/png"]],
+  ["/copertina.png", ["copertina.png", "image/png"]],
   ["/liceo-tradizionale.png", ["liceo-tradizionale.png", "image/png"]],
 ]);
 
