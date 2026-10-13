@@ -18,6 +18,7 @@ const staticFiles = new Map([
   ["/admin.js", ["admin.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/logo.png", ["logo.png", "image/png"]],
+  ["/hero-pattern.svg", ["hero-pattern.svg", "image/svg+xml"]],
 ]);
 
 function sendJson(response, result) {

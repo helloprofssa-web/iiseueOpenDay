@@ -174,6 +174,46 @@ main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
   border-left: 6px solid var(--indigo);
 }
 
+.hero.hero-red {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 1.25rem;
+  background: linear-gradient(to right, #d1344c 0, #ab2b3e 100%);
+  color: #fff;
+  box-shadow: 0 12px 32px rgba(171, 43, 62, .28);
+}
+
+.hero.hero-red::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("/hero-pattern.svg") 0 0 / 65px 65px;
+  opacity: .12;
+}
+
+.hero.hero-red::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: -90px;
+  width: 312px;
+  height: 312px;
+  margin-top: -156px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .18);
+  box-shadow: 0 0 0 28px rgba(255, 255, 255, .05), 0 0 0 29px rgba(255, 255, 255, .14), inset 0 0 0 28px rgba(255, 255, 255, .05);
+}
+
+.hero.hero-red h1,
+.hero.hero-red .hero-description,
+.hero.hero-red .hero-list,
+.hero.hero-red .hero-list strong { color: #fff; }
+.hero.hero-red .badge { background: rgba(255, 255, 255, .18); color: #fff; }
+
 h1 {
   margin-bottom: 14px;
   color: var(--indigo-dark);
