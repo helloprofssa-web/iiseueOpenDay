@@ -62,30 +62,32 @@ after(async () => {
   if (temporaryDirectory) await fs.rm(temporaryDirectory, { recursive: true, force: true });
 });
 
-function booking(attendees, turn = 1) {
+function booking(attendees, turn = 1, id = "") {
   return {
-    firstName: "Ada",
-    lastName: "Rossi",
+    firstName: `Ada${id}`,
+    lastName: `Rossi${id}`,
     school: "Scuola media Galileo",
-    email: "Ada.Rossi@example.com",
+    email: `Ada.Rossi${id}@example.com`,
     program: "tradizionale",
     turn: String(turn),
     attendees: String(attendees),
   };
 }
 
-async function reserve(attendees, turn = 1) {
+let sequence = 0;
+
+async function reserve(attendees, turn = 1, id = `-${(sequence += 1)}`) {
   return fetch(`${baseUrl}/api/reservations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(booking(attendees, turn)),
+    body: JSON.stringify(booking(attendees, turn, id)),
   });
 }
 
 test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa", async () => {
   let response = await fetch(`${baseUrl}/api/availability`);
   assert.equal(response.status, 200);
-  assert.deepEqual((await response.json()).turns.map(({ available }) => available), [100, 100]);
+  assert.deepEqual((await response.json()).turns.map(({ available }) => available), [150, 150]);
 
   response = await fetch(`${baseUrl}/api/reservations`, {
     method: "POST",
@@ -100,12 +102,13 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   assert.match(firstReservation.code, /^[A-F0-9]{10}$/);
   assert.equal(firstReservation.attendees, 3);
 
-  for (let index = 0; index < 32; index += 1) {
+  for (let index = 0; index < 48; index += 1) {
     response = await reserve(3);
     assert.equal(response.status, 201);
   }
+  assert.equal((await reserve(2)).status, 201);
 
-  const finalSeatAttempts = await Promise.all([reserve(1), reserve(2)]);
+  const finalSeatAttempts = await Promise.all([reserve(1), reserve(1)]);
   assert.deepEqual(finalSeatAttempts.map((result) => result.status).sort(), [201, 409]);
   const fullTurnAttempt = await reserve(1);
   assert.equal(fullTurnAttempt.status, 409);
@@ -114,7 +117,18 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   response = await reserve(2, 2);
   assert.equal(response.status, 201);
   response = await fetch(`${baseUrl}/api/availability`);
-  assert.deepEqual((await response.json()).turns.map(({ available }) => available), [0, 98]);
+  assert.deepEqual((await response.json()).turns.map(({ available }) => available), [0, 148]);
+
+  // Lo stesso studente non può prenotare anche l'altro turno (stesso nome o stessa email).
+  response = await reserve(1, 2, "-1");
+  assert.equal(response.status, 409);
+  assert.match((await response.json()).error, /già una prenotazione/);
+  response = await fetch(`${baseUrl}/api/reservations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...booking(1, 2, "-new"), email: "ADA.rossi-1@example.com" }),
+  });
+  assert.equal(response.status, 409);
 
   response = await fetch(`${baseUrl}/api/admin/reservations`);
   assert.equal(response.status, 401);
@@ -123,7 +137,7 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
   });
   assert.equal(response.status, 200);
   let adminData = await response.json();
-  assert.equal(adminData.turns[0].booked, 100);
+  assert.equal(adminData.turns[0].booked, 150);
   const groupReservation = adminData.reservations.find((item) => item.attendees === 3);
   assert.ok(groupReservation);
 
@@ -136,7 +150,7 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
     headers: { "x-admin-key": adminKey },
   });
   adminData = await response.json();
-  assert.equal(adminData.turns[0].booked, 97);
+  assert.equal(adminData.turns[0].booked, 147);
   assert.equal(adminData.turns[0].available, 3);
 
   response = await fetch(baseUrl);
@@ -145,7 +159,7 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
 });
 
 test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", async () => {
-  let response = await reserve(2, 2);
+  let response = await reserve(2, 2, "");
   assert.equal(response.status, 201);
   const { code, emailSent, ticketUrl } = await response.json();
   assert.equal(emailSent, false);
@@ -187,7 +201,7 @@ test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", 
   response = await fetch(`${baseUrl}/api/reservations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...booking(1), email: "non-una-email" }),
+    body: JSON.stringify({ ...booking(1, 1, "-x"), email: "non-una-email" }),
   });
   assert.equal(response.status, 400);
 });

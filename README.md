@@ -1,7 +1,7 @@
 # Open Day
 
 Applicazione web per raccogliere e gestire le prenotazioni dell'open day scolastico.
-Ogni turno ammette al massimo 100 persone: nel conteggio rientrano lo studente e gli
+Ogni turno ammette al massimo 150 persone: nel conteggio rientrano lo studente e gli
 eventuali accompagnatori.
 
 ## Pubblicazione su Vercel
@@ -43,7 +43,7 @@ Richiede Node.js 22.5 o successivo.
 ```powershell
 npm install
 $env:OPEN_DAY_ADMIN_KEY = "openday26iiseue!"
-$env:OPEN_DAY_CHECKIN_KEY = "checkin26iiseue!"
+$env:OPEN_DAY_CHECKIN_KEY = "CheckIn@Eu26!"
 npm start
 ```
 

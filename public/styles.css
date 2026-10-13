@@ -162,6 +162,7 @@ h1, h2, h3, p { margin-top: 0; }
 }
 
 .header-link:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.export-button { border: 0; background: var(--indigo); cursor: pointer; font-family: inherit; }
 .header-links .header-link:first-child { background: var(--orange); }
 .header-links .header-link:last-child { background: var(--red); }
 
@@ -451,11 +452,11 @@ select:disabled { color: #9ca3af; }
   text-align: center;
   background: linear-gradient(135deg, #fff 0%, #fdecef 100%);
 }
-.countdown .eyebrow { margin-bottom: 18px; }
-.countdown-grid { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.countdown .eyebrow { margin-bottom: 18px; padding: 8px 20px; font-size: clamp(16px, 2.6vw, 24px); }
+.countdown-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .countdown-unit {
-  min-width: 96px;
-  padding: 16px 12px 12px;
+  min-width: 72px;
+  padding: 10px 8px 8px;
   border-radius: 1rem;
   background: linear-gradient(160deg, #dc4a60, #ab2b3e);
   box-shadow: 0 8px 20px rgba(171, 43, 62, .3);
@@ -463,12 +464,12 @@ select:disabled { color: #9ca3af; }
 }
 .countdown-unit strong {
   display: block;
-  font-size: 44px;
+  font-size: 30px;
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.countdown-unit span { display: block; margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+.countdown-unit span { display: block; margin-top: 5px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
 .countdown-note { margin: 18px 0 0; color: var(--muted); font-size: 14px; font-weight: 600; }
 .countdown.is-urgent [data-cd="seconds"] { animation: cd-pulse 1s ease-in-out infinite; }
 .countdown.is-closed .countdown-unit { background: #9ca3af; box-shadow: none; }
@@ -487,8 +488,8 @@ select:disabled { color: #9ca3af; }
   .site-footer { font-size: 11px; }
   .hero { flex-direction: column; }
   .hero-image { width: 100%; max-width: none; height: 280px; align-self: auto; object-position: center 35%; }
-  .countdown-unit { min-width: 70px; padding: 12px 8px 10px; }
-  .countdown-unit strong { font-size: 30px; }
+  .countdown-unit { min-width: 58px; padding: 8px 6px; }
+  .countdown-unit strong { font-size: 24px; }
   .countdown-grid { gap: 8px; }
 }
 

@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#c0394d">
     <title>Gestione prenotazioni · Open Day</title>
     <link rel="stylesheet" href="/styles.css">
+    <script src="/xlsx.js" defer></script>
     <script src="/admin.js" defer></script>
   </head>
   <body class="admin-page"><span class="decor decor-3" aria-hidden="true"></span><span class="decor decor-4" aria-hidden="true"></span>
@@ -47,6 +48,7 @@
         <div class="admin-toolbar reservations-toolbar">
           <div><h2>Elenco prenotazioni</h2><p class="admin-subtitle">Più recenti per prime</p></div>
           <span id="reservation-count" class="reservation-count"></span>
+          <button id="export-xlsx" class="header-link export-button" type="button">Esporta in Excel</button>
         </div>
         <div id="reservations-list" class="reservations-list"></div>
       </section>

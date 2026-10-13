@@ -55,7 +55,10 @@ function renderCapacity(turns) {
   }
 }
 
+let currentReservations = [];
+
 function renderReservations(reservations) {
+  currentReservations = reservations;
   const container = document.querySelector("#reservations-list");
   container.replaceChildren();
   document.querySelector("#reservation-count").textContent =
@@ -171,6 +174,26 @@ document.querySelector("#admin-logout").addEventListener("click", () => {
   dashboard.hidden = true;
   loginPanel.hidden = false;
   setMessage(loginMessage, "");
+});
+
+document.querySelector("#export-xlsx").addEventListener("click", () => {
+  const turnName = (turn) => (turn === 1 ? "Primo turno" : "Secondo turno");
+  const rows = [["Cognome", "Nome", "Scuola di provenienza", "Email", "Indirizzo", "Turno", "Persone", "Codice", "Iscritto il", "Ingresso"]];
+  const sorted = [...currentReservations].sort((a, b) => a.turn - b.turn || a.lastName.localeCompare(b.lastName, "it"));
+  for (const item of sorted) {
+    rows.push([
+      item.lastName, item.firstName, item.school, item.email,
+      item.program === "applicate" ? "Scienze applicate" : "Tradizionale",
+      turnName(item.turn), item.attendees, item.code, formatDate(item.createdAt),
+      item.checkedInAt ? formatDate(item.checkedInAt) : "",
+    ]);
+  }
+  const url = URL.createObjectURL(window.buildXlsx(rows));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `prenotazioni-open-day-${new Date().toISOString().slice(0, 10)}.xlsx`;
+  link.click();
+  URL.revokeObjectURL(url);
 });
 
 adminKey = sessionStorage.getItem(keyStorageName) || "";
