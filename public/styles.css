@@ -179,13 +179,14 @@ main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
 
 .hero {
   margin-bottom: 20px;
-  padding: 32px clamp(20px, 4vw, 40px);
+  padding: 0;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  gap: 32px;
+  align-items: stretch;
+  gap: 0;
 }
-.hero-text { flex: 1 1 auto; min-width: 0; }
-.hero-image { width: 280px; max-width: 32%; height: auto; flex: none; border-radius: 1.25rem; }
+.hero-text { flex: 1 1 auto; min-width: 0; padding: 32px clamp(20px, 4vw, 40px); }
+.hero-image { width: 300px; max-width: 34%; flex: none; align-self: stretch; height: auto; object-fit: cover; object-position: center bottom; }
 
 h1 {
   margin-bottom: 14px;
@@ -482,7 +483,7 @@ select:disabled { color: #9ca3af; }
   .form-grid, .choice-grid { margin-left: 0; }
   .site-footer { font-size: 11px; }
   .hero { flex-direction: column; }
-  .hero-image { max-width: 70%; }
+  .hero-image { width: 100%; max-width: none; height: 280px; align-self: auto; object-position: center 35%; }
   .countdown-unit { min-width: 70px; padding: 12px 8px 10px; }
   .countdown-unit strong { font-size: 30px; }
   .countdown-grid { gap: 8px; }
