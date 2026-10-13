@@ -48,6 +48,7 @@ Richiede Node.js 22.5 o successivo.
 npm install
 $env:OPEN_DAY_ADMIN_KEY = "openday26iiseue!"
 $env:OPEN_DAY_CHECKIN_KEY = "CheckIn@Eu26!"
+$env:OPEN_DAY_CAPACITY = 200
 $env:SMTP_HOST="smtp.office365.com"
 $env:SMTP_PORT="587"
 $env:SMTP_USER="smtp-openday@nomescuola.edu.it"

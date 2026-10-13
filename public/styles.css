@@ -220,7 +220,7 @@ h1 span { color: var(--indigo); }
 .section-heading h2, .admin-toolbar h2 { margin: 0; color: var(--indigo-dark); font-size: 28px; font-weight: 900; letter-spacing: -.02em; }
 .section-aside { max-width: 300px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
 
-.capacity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.capacity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
 
 .capacity-card {
   padding: 18px 20px;
