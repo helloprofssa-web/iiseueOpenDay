@@ -190,7 +190,7 @@ main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
   gap: 0;
 }
 .hero-text { flex: 1 1 auto; min-width: 0; padding: 32px clamp(20px, 4vw, 40px); }
-.hero-image { width: 380px; max-width: 42%; flex: none; align-self: stretch; height: auto; object-fit: cover; object-position: center bottom; }
+.hero-image { width: 380px; max-width: 45%; flex: none; align-self: stretch; height: auto; object-fit: cover; object-position: center bottom; }
 
 h1 {
   margin-bottom: 14px;
@@ -207,6 +207,7 @@ h1 span { color: var(--indigo); }
 .hero-list { margin: 0; padding-left: 20px; color: #4b5563; font-size: 15px; line-height: 1.75; }
 .hero-list li { margin-bottom: 6px; }
 .hero-list strong { color: #374151; }
+.booking-guide { margin-bottom: 20px; }
 
 .booking-section {
   width: 100%;
