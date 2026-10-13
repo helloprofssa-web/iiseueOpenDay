@@ -122,10 +122,10 @@ h1, h2, h3, p { margin-top: 0; }
 .brand-logo { height: 88px; width: auto; display: block; mix-blend-mode: multiply; }
 
 .brand-tag {
-  padding: 6px 16px;
+  padding: 8px 22px;
   border-radius: 999px;
   background: #fdecef;
-  font-size: 20px;
+  font-size: 30px;
   letter-spacing: .04em;
   white-space: nowrap;
 }
