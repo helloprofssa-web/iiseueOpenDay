@@ -176,7 +176,7 @@ document.querySelector("#admin-logout").addEventListener("click", () => {
   setMessage(loginMessage, "");
 });
 
-document.querySelector("#send-tickets").addEventListener("click", async (event) => {
+document.querySelector("#send-tickets")?.addEventListener("click", async (event) => {
   if (!window.confirm("Inviare ora il biglietto via email a tutti gli iscritti che non l'hanno ancora ricevuto?")) return;
   const button = event.currentTarget;
   button.disabled = true;
