@@ -108,6 +108,17 @@ h1, h2, h3, p { margin-top: 0; }
 
 .brand strong { color: var(--indigo); font-weight: 900; }
 
+.brand-logo { height: 72px; width: auto; display: block; mix-blend-mode: multiply; }
+
+.brand-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #eef2ff;
+  font-size: 15px;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
 .brand-mark {
   width: 44px;
   height: 44px;
@@ -418,6 +429,8 @@ select:disabled { color: #9ca3af; }
 @media (max-width: 700px) {
   .site-header { padding: 12px 14px; }
   .brand { font-size: 17px; }
+  .brand-logo { height: 52px; }
+  .brand-tag { display: none; }
   .header-links { width: 100%; }
   .header-links .header-link { flex: 1 1 140px; }
   .section-heading { display: block; }
