@@ -117,13 +117,13 @@ h1, h2, h3, p { margin-top: 0; }
 
 .brand strong { color: var(--indigo); font-weight: 900; }
 
-.brand-logo { height: 72px; width: auto; display: block; mix-blend-mode: multiply; }
+.brand-logo { height: 64px; width: auto; display: block; mix-blend-mode: multiply; }
 
 .brand-tag {
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 999px;
   background: #eef2ff;
-  font-size: 15px;
+  font-size: 20px;
   letter-spacing: .04em;
   white-space: nowrap;
 }
