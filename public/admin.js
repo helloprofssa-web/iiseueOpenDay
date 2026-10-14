@@ -20,6 +20,12 @@ function formatDate(value) {
 }
 
 const schoolNames = { liceo: "Liceo", tecnico: "Tecnico" };
+const programNames = {
+  tradizionale: "Liceo scientifico tradizionale",
+  applicate: "Scienze applicate",
+  afm: "Amministrazione Finanza & Marketing",
+  turismo: "Turismo",
+};
 
 function renderCapacity(schools) {
   const container = document.querySelector("#admin-capacity");
@@ -101,9 +107,7 @@ function renderReservations(reservations) {
     const attendees = document.createElement("span");
     attendees.textContent = `${reservation.attendees} ${reservation.attendees === 1 ? "persona" : "persone"}`;
     const program = document.createElement("span");
-    program.textContent = reservation.schoolType === "tecnico"
-      ? "Istituto tecnico"
-      : reservation.program === "tradizionale" ? "Liceo scientifico tradizionale" : "Scienze applicate";
+    program.textContent = programNames[reservation.program] || reservation.program;
     const time = document.createElement("span");
     time.textContent = formatDate(reservation.createdAt);
     const email = document.createElement("span");
@@ -218,7 +222,7 @@ function exportXlsx(schoolType) {
   for (const item of sorted) {
     rows.push([
       item.lastName, item.firstName, item.school, item.email, schoolNames[schoolType],
-      item.program === "applicate" ? "Scienze applicate" : item.program === "tecnico" ? "Tecnico" : "Tradizionale",
+      programNames[item.program] || item.program,
       turnName(item.turn), item.attendees, item.code, formatDate(item.createdAt),
       item.checkedInAt ? formatDate(item.checkedInAt) : "",
     ]);

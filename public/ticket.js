@@ -20,7 +20,7 @@ async function loadTicket() {
     document.querySelector("#ticket-turn").textContent = ticket.turn === 1 ? "Primo turno" : "Secondo turno";
     document.querySelector("#ticket-attendees").textContent = String(ticket.attendees);
     document.querySelector("#ticket-program").textContent =
-      ticket.program === "tradizionale" ? "Scientifico tradizionale" : "Scienze applicate";
+      ({ tradizionale: "Scientifico tradizionale", applicate: "Scienze applicate", afm: "Amministrazione Finanza & Marketing", turismo: "Turismo" })[ticket.program] || ticket.program;
     document.querySelector("#ticket").hidden = false;
     if (new URLSearchParams(window.location.search).has("print")) {
       const image = document.querySelector("#ticket-qr");

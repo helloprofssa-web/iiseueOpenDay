@@ -169,7 +169,7 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
 
 test("lo stesso studente può iscriversi sia al liceo sia al tecnico, con posti separati", async () => {
   const data = { ...booking(2, 2, "-both"), schoolType: "tecnico" };
-  delete data.program;
+  data.program = "turismo";
   const post = (body) => fetch(`${baseUrl}/api/reservations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
