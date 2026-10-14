@@ -4,6 +4,8 @@
   "outputDirectory": "public",
   "functions": { "api/send-tickets.js": { "maxDuration": 60 } },
   "rewrites": [
+    { "source": "/liceo", "destination": "/liceo.html" },
+    { "source": "/tecnico", "destination": "/tecnico.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/checkin", "destination": "/checkin.html" },
     { "source": "/cancel", "destination": "/cancel.html" },

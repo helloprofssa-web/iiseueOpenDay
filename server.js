@@ -8,6 +8,8 @@ const PORT = Number(process.env.PORT || 3000);
 const staticFiles = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
+  ["/liceo", ["liceo.html", "text/html; charset=utf-8"]],
+  ["/tecnico", ["tecnico.html", "text/html; charset=utf-8"]],
   ["/admin", ["admin.html", "text/html; charset=utf-8"]],
   ["/checkin", ["checkin.html", "text/html; charset=utf-8"]],
   ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
@@ -54,7 +56,7 @@ function readJson(request) {
 }
 
 async function route(request, url) {
-  if (request.method === "GET" && url.pathname === "/api/availability") return core.getAvailability();
+  if (request.method === "GET" && url.pathname === "/api/availability") return core.getAvailability(url.searchParams.get("school") || undefined);
   if (request.method === "GET" && url.pathname === "/api/ticket") {
     return core.getTicket(url.searchParams.get("code"));
   }

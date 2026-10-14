@@ -19,9 +19,22 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-function renderCapacity(turns) {
+const schoolNames = { liceo: "Liceo", tecnico: "Tecnico" };
+
+function renderCapacity(schools) {
   const container = document.querySelector("#admin-capacity");
   container.replaceChildren();
+  for (const [schoolType, turns] of Object.entries(schools)) {
+    const heading = document.createElement("h3");
+    heading.className = "full-width";
+    heading.style.gridColumn = "1 / -1";
+    heading.textContent = `Open Day ${schoolNames[schoolType]}`;
+    container.append(heading);
+    renderTurns(container, turns);
+  }
+}
+
+function renderTurns(container, turns) {
   for (const turn of turns) {
     const card = document.createElement("article");
     card.className = `capacity-card${turn.turn === 2 ? " capacity-card-alt" : ""}${turn.available === 0 ? " is-full" : ""}`;
@@ -88,9 +101,9 @@ function renderReservations(reservations) {
     const attendees = document.createElement("span");
     attendees.textContent = `${reservation.attendees} ${reservation.attendees === 1 ? "persona" : "persone"}`;
     const program = document.createElement("span");
-    program.textContent = reservation.program === "tradizionale"
-      ? "Liceo scientifico tradizionale"
-      : "Scienze applicate";
+    program.textContent = reservation.schoolType === "tecnico"
+      ? "Istituto tecnico"
+      : reservation.program === "tradizionale" ? "Liceo scientifico tradizionale" : "Scienze applicate";
     const time = document.createElement("span");
     time.textContent = formatDate(reservation.createdAt);
     const email = document.createElement("span");
@@ -100,7 +113,9 @@ function renderReservations(reservations) {
     entry.textContent = reservation.checkedInAt
       ? `Entrato alle ${formatDate(reservation.checkedInAt)}`
       : "Non ancora entrato";
-    meta.append(turn, attendees, program, time, email, entry);
+    const schoolLabel = document.createElement("span");
+    schoolLabel.textContent = `Open Day ${schoolNames[reservation.schoolType] || schoolNames.liceo}`;
+    meta.append(schoolLabel, turn, attendees, program, time, email, entry);
     details.append(name, school, meta);
 
     const actions = document.createElement("div");
@@ -133,7 +148,7 @@ async function loadReservations() {
     }
     throw new Error(result.error || "Non è stato possibile caricare le prenotazioni.");
   }
-  renderCapacity(result.turns);
+  renderCapacity(result.schools);
   renderReservations(result.reservations);
   loginPanel.hidden = true;
   dashboard.hidden = false;
@@ -194,14 +209,16 @@ document.querySelector("#send-tickets")?.addEventListener("click", async (event)
   }
 });
 
-document.querySelector("#export-xlsx").addEventListener("click", () => {
+function exportXlsx(schoolType) {
   const turnName = (turn) => (turn === 1 ? "Primo turno" : "Secondo turno");
-  const rows = [["Cognome", "Nome", "Scuola di provenienza", "Email", "Indirizzo", "Turno", "Persone", "Codice", "Iscritto il", "Ingresso"]];
-  const sorted = [...currentReservations].sort((a, b) => a.turn - b.turn || a.lastName.localeCompare(b.lastName, "it"));
+  const rows = [["Cognome", "Nome", "Scuola di provenienza", "Email", "Open Day", "Indirizzo", "Turno", "Persone", "Codice", "Iscritto il", "Ingresso"]];
+  const sorted = currentReservations
+    .filter((item) => (item.schoolType || "liceo") === schoolType)
+    .sort((a, b) => a.turn - b.turn || a.lastName.localeCompare(b.lastName, "it"));
   for (const item of sorted) {
     rows.push([
-      item.lastName, item.firstName, item.school, item.email,
-      item.program === "applicate" ? "Scienze applicate" : "Tradizionale",
+      item.lastName, item.firstName, item.school, item.email, schoolNames[schoolType],
+      item.program === "applicate" ? "Scienze applicate" : item.program === "tecnico" ? "Tecnico" : "Tradizionale",
       turnName(item.turn), item.attendees, item.code, formatDate(item.createdAt),
       item.checkedInAt ? formatDate(item.checkedInAt) : "",
     ]);
@@ -209,10 +226,13 @@ document.querySelector("#export-xlsx").addEventListener("click", () => {
   const url = URL.createObjectURL(window.buildXlsx(rows));
   const link = document.createElement("a");
   link.href = url;
-  link.download = `prenotazioni-open-day-${new Date().toISOString().slice(0, 10)}.xlsx`;
+  link.download = `prenotazioni-open-day-${schoolType}-${new Date().toISOString().slice(0, 10)}.xlsx`;
   link.click();
   URL.revokeObjectURL(url);
-});
+}
+
+document.querySelector("#export-xlsx-liceo").addEventListener("click", () => exportXlsx("liceo"));
+document.querySelector("#export-xlsx-tecnico").addEventListener("click", () => exportXlsx("tecnico"));
 
 adminKey = sessionStorage.getItem(keyStorageName) || "";
 if (adminKey) {

@@ -1,4 +1,5 @@
 const bookingForm = document.querySelector("#booking-form");
+const schoolType = document.body.dataset.school || "liceo";
 const formMessage = document.querySelector("#form-message");
 
 function showFormMessage(message, type = "error", code = "", link = null) {
@@ -59,7 +60,7 @@ function tickCountdown() {
 
 async function refreshAvailability() {
   try {
-    const response = await fetch("/api/availability");
+    const response = await fetch(`/api/availability?school=${schoolType}`);
     if (!response.ok) throw new Error("Non è stato possibile caricare i posti disponibili.");
     const { turns, deadline, now } = await response.json();
     if (deadline) {
@@ -97,6 +98,7 @@ bookingForm.addEventListener("submit", async (event) => {
     lastName: values.get("lastName"),
     school: values.get("school"),
     email: values.get("email"),
+    schoolType,
     program: values.get("program"),
     turn: values.get("turn"),
     attendees: values.get("attendees"),

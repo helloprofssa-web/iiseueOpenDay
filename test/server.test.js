@@ -160,7 +160,30 @@ test("prenotazioni: capienza per persona, concorrenza e gestione amministrativa"
 
   response = await fetch(baseUrl);
   assert.equal(response.status, 200);
+  assert.match(await response.text(), /href="\/tecnico"/);
+  response = await fetch(`${baseUrl}/liceo`);
   assert.match(await response.text(), /Liceo scientifico/);
+  response = await fetch(`${baseUrl}/tecnico`);
+  assert.equal(response.status, 200);
+});
+
+test("lo stesso studente può iscriversi sia al liceo sia al tecnico, con posti separati", async () => {
+  const data = { ...booking(2, 2, "-both"), schoolType: "tecnico" };
+  delete data.program;
+  const post = (body) => fetch(`${baseUrl}/api/reservations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  assert.equal((await post({ ...booking(2, 2, "-both"), schoolType: "liceo" })).status, 201);
+  assert.equal((await post(data)).status, 201);
+  assert.equal((await post(data)).status, 409);
+  const tecnico = await (await fetch(`${baseUrl}/api/availability?school=tecnico`)).json();
+  assert.equal(tecnico.turns[1].booked, 2);
+  assert.equal((await fetch(`${baseUrl}/api/availability?school=altro`)).status, 400);
+  const admin = await (await fetch(`${baseUrl}/api/admin/reservations`, { headers: { "x-admin-key": adminKey } })).json();
+  assert.equal(admin.reservations.filter((r) => r.email === "ada.rossi-both@example.com").length, 2);
+  assert.equal(admin.schools.tecnico[1].booked, 2);
 });
 
 test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", async () => {
