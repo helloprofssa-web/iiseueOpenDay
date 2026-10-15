@@ -31,7 +31,7 @@ const staticFiles = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
 ]);
 
-const imageTypes = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp" };
+const imageTypes = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp", ".ico": "image/x-icon" };
 
 function sendJson(response, result) {
   response.writeHead(result.status, {
@@ -140,7 +140,7 @@ const server = http.createServer(async (request, response) => {
       return response.end(content);
     }
 
-    if (request.method === "GET" && /^\/img\/[A-Za-z0-9_-]+\.(png|jpe?g|svg|webp)$/.test(url.pathname)) {
+    if (request.method === "GET" && /^\/img\/[A-Za-z0-9_-]+\.(png|jpe?g|svg|webp|ico)$/.test(url.pathname)) {
       const content = await fs.readFile(path.join(__dirname, "public", url.pathname));
       response.writeHead(200, { "Content-Type": imageTypes[path.extname(url.pathname)], "Cache-Control": "no-cache" });
       return response.end(content);
