@@ -2,13 +2,11 @@ const loginPanel = document.querySelector("#admin-login-panel");
 const loginForm = document.querySelector("#admin-login-form");
 const loginMessage = document.querySelector("#admin-login-message");
 const dashboard = document.querySelector("#admin-dashboard");
-const adminForm = document.querySelector("#ministage-admin-form");
 const adminMessage = document.querySelector("#ministage-admin-message");
 const listContainer = document.querySelector("#ministage-admin-list");
 const keyStorageName = "open-day-admin-key";
 const schoolNames = { liceo: "Liceo", tecnico: "Tecnico" };
 let adminKey = "";
-let editingId = null;
 let state = { ministages: [], reservations: [] };
 
 function setMessage(element, message, type = "error") {
@@ -19,12 +17,6 @@ function setMessage(element, message, type = "error") {
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("it-IT", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
-}
-
-function toLocalInput(value) {
-  const date = new Date(value);
-  const offset = date.getTimezoneOffset() * 60_000;
-  return new Date(date.getTime() - offset).toISOString().slice(0, 16);
 }
 
 async function api(path, options = {}) {
@@ -59,7 +51,7 @@ function renderList() {
   if (state.ministages.length === 0) {
     const empty = document.createElement("p");
     empty.className = "empty-state";
-    empty.textContent = "Non ci sono ancora mini stage.";
+    empty.textContent = "Nessuna giornata disponibile.";
     listContainer.append(empty);
     return;
   }
@@ -78,7 +70,6 @@ function renderList() {
     for (const text of [
       `Open Day ${schoolNames[item.schoolType]}`,
       item.endsAt ? `${formatDate(item.startsAt)} - ${new Intl.DateTimeFormat("it-IT", { timeStyle: "short" }).format(new Date(item.endsAt))}` : formatDate(item.startsAt),
-      item.location,
       `${item.booked} / ${item.capacity} iscritti`,
     ].filter(Boolean)) {
       const span = document.createElement("span");
@@ -86,18 +77,11 @@ function renderList() {
       meta.append(span);
     }
     top.append(title, meta);
-    if (item.description) {
-      const description = document.createElement("p");
-      description.textContent = item.description;
-      top.append(description);
-    }
 
     const actions = document.createElement("div");
     actions.className = "reservation-actions";
     actions.append(
-      button("Modifica", "text-button", () => startEdit(item)),
       button("Esporta email", "text-button", () => exportEmails(`email-${item.title}`, (r) => r.ministageId === item.id)),
-      button("Elimina", "cancel-button", () => removeMinistage(item)),
     );
 
     const attendees = document.createElement("div");
@@ -130,101 +114,15 @@ async function load() {
   dashboard.hidden = false;
 }
 
-function resetForm() {
-  editingId = null;
-  adminForm.reset();
-  document.querySelector("#ministage-form-title").textContent = "Nuovo mini stage";
-  document.querySelector("#ministage-submit-label").textContent = "Aggiungi mini stage";
-  document.querySelector("#ministage-cancel-edit").hidden = true;
-}
-
-function startEdit(item) {
-  editingId = item.id;
-  adminForm.elements.schoolType.value = item.schoolType;
-  adminForm.elements.title.value = item.title;
-  adminForm.elements.startsAt.value = toLocalInput(item.startsAt);
-  adminForm.elements.endTime.value = item.endsAt ? toLocalInput(item.endsAt).slice(11) : "";
-  adminForm.elements.lastDay.value = "";
-  adminForm.elements.capacity.value = item.capacity;
-  adminForm.elements.location.value = item.location;
-  adminForm.elements.description.value = item.description;
-  document.querySelector("#ministage-form-title").textContent = "Modifica mini stage";
-  document.querySelector("#ministage-submit-label").textContent = "Salva modifiche";
-  document.querySelector("#ministage-cancel-edit").hidden = false;
-  adminForm.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-async function removeMinistage(item) {
-  if (!window.confirm(`Eliminare "${item.title}" e le ${item.booked} iscrizioni collegate?`)) return;
-  try {
-    await api(`/api/admin/ministages/${encodeURIComponent(item.id)}`, { method: "DELETE" });
-    if (editingId === item.id) resetForm();
-    await load();
-  } catch (error) {
-    setMessage(adminMessage, error.message);
-  }
-}
-
 async function removeReservation(reservation) {
   if (!window.confirm(`Annullare l'iscrizione di ${reservation.firstName} ${reservation.lastName}?`)) return;
   try {
-    await api(`/api/admin/ministages/${encodeURIComponent(reservation.id)}?type=reservation`, { method: "DELETE" });
+    await api(`/api/admin/ministages/${encodeURIComponent(reservation.id)}`, { method: "DELETE" });
     await load();
   } catch (error) {
     setMessage(adminMessage, error.message);
   }
 }
-
-adminForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const values = Object.fromEntries(new FormData(adminForm));
-  const base = {
-    schoolType: values.schoolType,
-    title: values.title.trim(),
-    description: values.description.trim(),
-    location: values.location.trim(),
-    capacity: Number(values.capacity),
-  };
-  const [startDate, startTime] = values.startsAt.split("T");
-  const at = (date, time) => new Date(`${date}T${time}`).toISOString();
-  const days = [];
-  if (editingId || !values.lastDay) {
-    days.push(startDate);
-  } else {
-    for (let day = new Date(`${startDate}T12:00`); day <= new Date(`${values.lastDay}T12:00`); day.setDate(day.getDate() + 1)) {
-      if (day.getDay() !== 0 && day.getDay() !== 6) days.push(day.toLocaleDateString("sv-SE"));
-    }
-    if (days.length === 0 || days.length > 31) {
-      setMessage(adminMessage, "Controlla il primo e l'ultimo giorno.");
-      return;
-    }
-  }
-  try {
-    for (const date of days) {
-      const payload = {
-        ...base,
-        startsAt: at(date, startTime),
-        endsAt: values.endTime ? at(date, values.endTime) : null,
-      };
-      await api(editingId ? `/api/admin/ministages/${encodeURIComponent(editingId)}` : "/api/admin/ministages", {
-        method: editingId ? "PUT" : "POST",
-        body: JSON.stringify(payload),
-      });
-    }
-    const wasEditing = Boolean(editingId);
-    resetForm();
-    await load();
-    setMessage(
-      adminMessage,
-      wasEditing ? "Mini stage aggiornato." : days.length > 1 ? `Aggiunti ${days.length} mini stage.` : "Mini stage aggiunto.",
-      "success",
-    );
-  } catch (error) {
-    setMessage(adminMessage, error.message);
-  }
-});
-
-document.querySelector("#ministage-cancel-edit").addEventListener("click", resetForm);
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();

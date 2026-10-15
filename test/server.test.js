@@ -234,36 +234,31 @@ test("biglietto, verifica all'ingresso e annullamento da parte del visitatore", 
   assert.equal(response.status, 400);
 });
 
-test("mini stage: creazione da admin, iscrizione, capienza e annullamento", async () => {
+test("mini stage: giornate fisse, iscrizione, doppione e annullamento", async () => {
   const admin = { "x-admin-key": adminKey, "Content-Type": "application/json" };
   const json = (method, path, body, headers = admin) =>
     fetch(`${baseUrl}${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
-  const future = new Date(Date.now() + 7 * 86_400_000).toISOString();
-  const draft = { schoolType: "tecnico", title: "Laboratorio", startsAt: future, capacity: 1 };
-
-  assert.equal((await json("POST", "/api/admin/ministages", draft, {})).status, 401);
-  let response = await json("POST", "/api/admin/ministages", draft);
-  assert.equal(response.status, 201);
-  const { id } = await response.json();
-
   const listFor = async (school) => (await (await fetch(`${baseUrl}/api/ministages?school=${school}`)).json()).ministages;
-  assert.equal((await listFor("liceo")).length, 0);
-  assert.equal((await listFor("tecnico"))[0].available, 1);
+  const id = "tecnico-2026-11-16";
+
+  const tecnico = await listFor("tecnico");
+  assert.equal(tecnico.length, 5);
+  assert.equal((await listFor("liceo")).length, 5);
+  assert.ok(tecnico.every((item) => item.schoolType === "tecnico" && new Date(item.startsAt) > new Date()));
+  assert.equal(tecnico.find((item) => item.id === id).available, 20);
 
   const student = { ministageId: id, firstName: "Ada", lastName: "Rossi", school: "Media", email: "ada.ms@example.com" };
-  response = await json("POST", "/api/ministages", student, {});
+  let response = await json("POST", "/api/ministages", student, {});
   assert.equal(response.status, 201);
   const { code } = await response.json();
-  assert.equal((await json("POST", "/api/ministages", { ...student, email: "b@example.com" }, {})).status, 409);
-  assert.equal((await json("PUT", `/api/admin/ministages/${id}`, { ...draft, capacity: 0 })).status, 400);
+  assert.equal((await json("POST", "/api/ministages", student, {})).status, 409);
+  assert.equal((await json("GET", "/api/admin/ministages", undefined, {})).status, 401);
 
   const overview = await (await json("GET", "/api/admin/ministages")).json();
   assert.equal(overview.reservations.length, 1);
+  assert.equal((await listFor("tecnico")).find((item) => item.id === id).available, 19);
 
   response = await json("POST", "/api/cancel", { code, email: student.email }, {});
   assert.equal(response.status, 200);
-  assert.equal((await listFor("tecnico"))[0].available, 1);
-
-  assert.equal((await json("DELETE", `/api/admin/ministages/${id}`)).status, 200);
-  assert.equal((await listFor("tecnico")).length, 0);
+  assert.equal((await listFor("tecnico")).find((item) => item.id === id).available, 20);
 });

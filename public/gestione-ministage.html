@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/img/logo.png">
     <meta name="theme-color" content="#c0394d">
     <title>Gestione mini stage · Open Day</title>
     <link rel="stylesheet" href="/styles.css">
@@ -22,7 +23,7 @@
       <section class="admin-intro">
         <p class="eyebrow">Area organizzatori</p>
         <h1>Gestione <span>mini stage.</span></h1>
-        <p>Crea i mini stage per liceo e tecnico e consulta le iscrizioni.</p>
+        <p>Consulta le iscrizioni ai mini stage di liceo e tecnico.</p>
       </section>
 
       <section id="admin-login-panel" class="admin-panel">
@@ -38,47 +39,12 @@
 
       <section id="admin-dashboard" hidden>
         <div class="admin-toolbar">
-          <div><h2 id="ministage-form-title">Nuovo mini stage</h2></div>
+          <div><h2>Giornate e iscritti</h2><p class="admin-subtitle">Posti occupati per ogni giornata.</p></div>
           <button id="admin-logout" class="text-button" type="button">Esci</button>
         </div>
-        <form id="ministage-admin-form" class="booking-form">
-          <div class="form-grid ministage-admin-grid">
-            <label>Open Day
-              <select name="schoolType" required>
-                <option value="liceo">Liceo</option>
-                <option value="tecnico">Tecnico</option>
-              </select>
-            </label>
-            <label>Titolo
-              <input name="title" maxlength="120" placeholder="Es. Laboratorio di informatica" required>
-            </label>
-            <label>Primo giorno e ora di inizio
-              <input name="startsAt" type="datetime-local" required>
-            </label>
-            <label>Ora di fine
-              <input name="endTime" type="time">
-            </label>
-            <label>Ultimo giorno (facoltativo)
-              <input name="lastDay" type="date">
-              <small>Se indicato, crea un mini stage per ogni giorno feriale, dal primo all'ultimo giorno.</small>
-            </label>
-            <label>Posti disponibili
-              <input name="capacity" type="number" min="1" max="1000" value="20" required>
-            </label>
-            <label class="full-width">Luogo (facoltativo)
-              <input name="location" maxlength="120" placeholder="Es. Aula 12">
-            </label>
-            <label class="full-width">Descrizione (facoltativa)
-              <input name="description" maxlength="1000" placeholder="Breve descrizione dell'attività">
-            </label>
-          </div>
-          <div id="ministage-admin-message" class="form-message" role="status" aria-live="polite" hidden></div>
-          <button class="submit-button" type="submit"><span id="ministage-submit-label">Aggiungi mini stage</span><span aria-hidden="true">↗</span></button>
-          <button id="ministage-cancel-edit" class="text-button" type="button" hidden>Annulla modifica</button>
-        </form>
-
+        <div id="ministage-admin-message" class="form-message" role="status" aria-live="polite" hidden></div>
         <div class="admin-toolbar reservations-toolbar">
-          <div><h2>Elenco mini stage</h2></div>
+          <div><h2>Esporta</h2></div>
           <button id="export-ministage-liceo" class="header-link export-button" type="button">Esporta Liceo (Excel)</button>
           <button id="export-ministage-tecnico" class="header-link export-button" type="button">Esporta Tecnico (Excel)</button>
           <button id="export-emails-liceo" class="header-link export-button" type="button">Email Liceo (questionario)</button>
