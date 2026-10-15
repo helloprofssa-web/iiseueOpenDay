@@ -166,7 +166,7 @@ async function removeMinistage(item) {
 async function removeReservation(reservation) {
   if (!window.confirm(`Annullare l'iscrizione di ${reservation.firstName} ${reservation.lastName}?`)) return;
   try {
-    await api(`/api/admin/ministage-reservations/${encodeURIComponent(reservation.id)}`, { method: "DELETE" });
+    await api(`/api/admin/ministages/${encodeURIComponent(reservation.id)}?type=reservation`, { method: "DELETE" });
     await load();
   } catch (error) {
     setMessage(adminMessage, error.message);

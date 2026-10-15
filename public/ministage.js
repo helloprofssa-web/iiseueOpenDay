@@ -79,7 +79,7 @@ form.addEventListener("submit", async (event) => {
   formMessage.hidden = true;
   const values = new FormData(form);
   try {
-    const response = await fetch("/api/ministage-reservations", {
+    const response = await fetch("/api/ministages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(Object.fromEntries(values)),

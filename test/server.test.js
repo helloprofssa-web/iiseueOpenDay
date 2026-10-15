@@ -251,10 +251,10 @@ test("mini stage: creazione da admin, iscrizione, capienza e annullamento", asyn
   assert.equal((await listFor("tecnico"))[0].available, 1);
 
   const student = { ministageId: id, firstName: "Ada", lastName: "Rossi", school: "Media", email: "ada.ms@example.com" };
-  response = await json("POST", "/api/ministage-reservations", student, {});
+  response = await json("POST", "/api/ministages", student, {});
   assert.equal(response.status, 201);
   const { code } = await response.json();
-  assert.equal((await json("POST", "/api/ministage-reservations", { ...student, email: "b@example.com" }, {})).status, 409);
+  assert.equal((await json("POST", "/api/ministages", { ...student, email: "b@example.com" }, {})).status, 409);
   assert.equal((await json("PUT", `/api/admin/ministages/${id}`, { ...draft, capacity: 0 })).status, 400);
 
   const overview = await (await json("GET", "/api/admin/ministages")).json();
