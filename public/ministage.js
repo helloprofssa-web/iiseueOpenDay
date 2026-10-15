@@ -6,6 +6,10 @@ const list = document.querySelector("#ministage-list");
 const pageMessage = document.querySelector("#ministage-message");
 const formMessage = document.querySelector("#ministage-message-form");
 
+const logo = document.querySelector("#ministage-logo");
+logo.src = school === "tecnico" ? "/img/TecnicoLogo.png" : "/img/LiceoLogo.png";
+logo.alt = `Logo ${schoolLabel}`;
+logo.hidden = false;
 document.querySelector("#ministage-school").textContent = `Mini stage ${schoolLabel}`;
 document.querySelector("#back-link").href = `/${school}`;
 document.title = `Mini stage ${schoolLabel} · Open Day`;
