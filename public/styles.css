@@ -556,3 +556,7 @@ select:disabled { color: #9ca3af; }
 .home-card .hero-image { width: 100%; max-width: 260px; height: 200px; align-self: center; object-fit: contain; object-position: center; }
 .home-card .eyebrowHome { margin: 0; text-align: center; }
 .home-card-cta { align-self: center; }
+.ministage-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 12px; }
+.ministage-links .submit-button, .ministage-banner .submit-button { display: inline-flex; width: auto; text-decoration: none; }
+.ministage-banner { margin: 0 0 20px; text-align: center; }
+.home-hero + .home-grid + .home-hero { text-align: center; }
