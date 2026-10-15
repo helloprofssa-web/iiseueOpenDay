@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#c0394d">
+    <title>Gestione prenotazioni · Open Day</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/xlsx.js" defer></script>
+    <script src="/admin.js" defer></script>
+  </head>
+  <body class="admin-page"><span class="decor decor-3" aria-hidden="true"></span><span class="decor decor-4" aria-hidden="true"></span>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Open Day, pagina iniziale">
+        <img class="brand-logo" src="/img/logo.png" alt="Istituto d'Istruzione Superiore Europa Unita, Lissone" width="930" height="220" />
+        <span class="brand-tag">OPEN <strong>DAY</strong></span>
+      </a>
+      <a class="header-link" href="/admin">← Area organizzatori</a>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-intro">
+        <p class="eyebrow">Area organizzatori</p>
+        <h1>Gestione <span>prenotazioni.</span></h1>
+        <p>Consulta i partecipanti e libera un posto annullando una prenotazione.</p>
+      </section>
+
+      <section id="admin-login-panel" class="admin-panel">
+        <h2>Accesso riservato</h2>
+        <p>Inserisci la chiave amministratore per visualizzare le prenotazioni.</p>
+        <form id="admin-login-form" class="admin-login-form">
+          <label for="admin-key">Chiave amministratore</label>
+          <input id="admin-key" name="key" type="password" autocomplete="current-password" required>
+          <div id="admin-login-message" class="form-message" role="alert" hidden></div>
+          <button class="submit-button" type="submit"><span>Accedi</span><span aria-hidden="true">↗</span></button>
+        </form>
+      </section>
+
+      <section id="admin-dashboard" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <h2>Posti occupati</h2>
+            <p class="admin-subtitle">Il conteggio include studenti e accompagnatori.</p>
+          </div>
+          <button id="admin-logout" class="text-button" type="button">Esci</button>
+        </div>
+        <div id="admin-capacity" class="capacity-grid admin-capacity-grid"></div>
+        <div class="admin-toolbar reservations-toolbar">
+          <div><h2>Elenco prenotazioni</h2><p class="admin-subtitle">Più recenti per prime</p></div>
+          <span id="reservation-count" class="reservation-count"></span>
+          <button id="export-xlsx-liceo" class="header-link export-button" type="button">Esporta Liceo (Excel)</button>
+          <button id="export-xlsx-tecnico" class="header-link export-button" type="button">Esporta Tecnico (Excel)</button>
+        </div>
+        <div id="reservations-list" class="reservations-list"></div>
+      </section>
+      <div id="admin-global-message" class="form-message" role="status" aria-live="polite" hidden></div>
+    </main>
+
+    <footer class="site-footer">
+      <span>OPEN DAY · <strong>Area organizzatori</strong></span>
+      <a href="/">Vai al modulo di prenotazione ↗</a>
+    </footer>
+  </body>
+</html>

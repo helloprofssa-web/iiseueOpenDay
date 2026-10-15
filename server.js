@@ -13,6 +13,7 @@ const staticFiles = new Map([
   ["/admin", ["admin.html", "text/html; charset=utf-8"]],
   ["/checkin", ["checkin.html", "text/html; charset=utf-8"]],
   ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
+  ["/admin/prenotazioni", ["gestione.html", "text/html; charset=utf-8"]],
   ["/cancel", ["cancel.html", "text/html; charset=utf-8"]],
   ["/ticket", ["ticket.html", "text/html; charset=utf-8"]],
   ["/cancel.js", ["cancel.js", "text/javascript; charset=utf-8"]],
