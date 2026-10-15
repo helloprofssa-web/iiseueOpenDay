@@ -3,6 +3,7 @@ const http = require("node:http");
 const fs = require("node:fs/promises");
 const path = require("node:path");
 const core = require("./lib/core");
+const ministage = require("./lib/ministage");
 
 const PORT = Number(process.env.PORT || 3000);
 const staticFiles = new Map([
@@ -13,6 +14,10 @@ const staticFiles = new Map([
   ["/admin", ["admin.html", "text/html; charset=utf-8"]],
   ["/checkin", ["checkin.html", "text/html; charset=utf-8"]],
   ["/admin.html", ["admin.html", "text/html; charset=utf-8"]],
+  ["/ministage", ["ministage.html", "text/html; charset=utf-8"]],
+  ["/admin/ministage", ["gestione-ministage.html", "text/html; charset=utf-8"]],
+  ["/ministage.js", ["ministage.js", "text/javascript; charset=utf-8"]],
+  ["/gestione-ministage.js", ["gestione-ministage.js", "text/javascript; charset=utf-8"]],
   ["/admin/prenotazioni", ["gestione.html", "text/html; charset=utf-8"]],
   ["/cancel", ["cancel.html", "text/html; charset=utf-8"]],
   ["/ticket", ["ticket.html", "text/html; charset=utf-8"]],
@@ -56,8 +61,41 @@ function readJson(request) {
   });
 }
 
+async function routeMinistage(request, url) {
+  const { pathname } = url;
+  const { method, headers } = request;
+  if (method === "GET" && pathname === "/api/ministages") {
+    return ministage.listPublicMinistages(url.searchParams.get("school"));
+  }
+  if (method === "GET" && pathname === "/api/admin/ministages") return ministage.listAdminMinistages(headers);
+  const itemMatch = pathname.match(/^\/api\/admin\/(ministages|ministage-reservations)\/([^/]+)$/);
+  const isBodyRoute =
+    (method === "POST" && ["/api/ministage-reservations", "/api/admin/ministages"].includes(pathname)) ||
+    (method === "PUT" && itemMatch && itemMatch[1] === "ministages");
+  if (isBodyRoute) {
+    let data;
+    try {
+      data = await readJson(request);
+    } catch (error) {
+      return { status: error.statusCode || 400, body: { error: error.message } };
+    }
+    if (pathname === "/api/ministage-reservations") return ministage.createMinistageReservation(data);
+    if (pathname === "/api/admin/ministages") return ministage.createMinistage(headers, data);
+    return ministage.updateMinistage(headers, decodeURIComponent(itemMatch[2]), data);
+  }
+  if (method === "DELETE" && itemMatch) {
+    const id = decodeURIComponent(itemMatch[2]);
+    return itemMatch[1] === "ministages"
+      ? ministage.deleteMinistage(headers, id)
+      : ministage.deleteMinistageReservation(headers, id);
+  }
+  return null;
+}
+
 async function route(request, url) {
   if (request.method === "GET" && url.pathname === "/api/availability") return core.getAvailability(url.searchParams.get("school") || undefined);
+  const ministageResult = await routeMinistage(request, url);
+  if (ministageResult) return ministageResult;
   if (request.method === "GET" && url.pathname === "/api/ticket") {
     return core.getTicket(url.searchParams.get("code"));
   }

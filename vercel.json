@@ -8,6 +8,8 @@
     { "source": "/tecnico", "destination": "/tecnico.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/admin/prenotazioni", "destination": "/gestione.html" },
+    { "source": "/admin/ministage", "destination": "/gestione-ministage.html" },
+    { "source": "/ministage", "destination": "/ministage.html" },
     { "source": "/checkin", "destination": "/checkin.html" },
     { "source": "/cancel", "destination": "/cancel.html" },
     { "source": "/ticket", "destination": "/ticket.html" }

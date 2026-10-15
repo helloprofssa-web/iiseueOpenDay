@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#c0394d">
+    <title>Mini stage · Open Day</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/ministage.js" defer></script>
+  </head>
+  <body><span class="decor decor-3" aria-hidden="true"></span><span class="decor decor-4" aria-hidden="true"></span>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Open Day, pagina iniziale">
+        <img class="brand-logo" src="/img/logo.png" alt="Istituto d'Istruzione Superiore Europa Unita, Lissone" width="930" height="220" />
+        <span class="brand-tag">OPEN <strong>DAY</strong></span>
+      </a>
+      <span class="header-links"><a class="header-link" id="back-link" href="/">← Torna all'Open Day</a><a class="header-link" href="/cancel">Annulla prenotazione</a></span>
+    </header>
+
+    <main>
+      <section class="hero glass-card home-hero">
+        <div class="hero-text">
+          <p class="badge" id="ministage-school">Mini stage</p>
+          <h1>Iscriviti a un mini stage</h1>
+          <p class="hero-description">Scegli il mini stage a cui vuoi partecipare e compila i tuoi dati. Puoi iscriverti a più mini stage.</p>
+        </div>
+      </section>
+
+      <section class="booking-section" aria-labelledby="ministage-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Un posto ti aspetta</p>
+            <h2 id="ministage-title">Mini stage disponibili</h2>
+          </div>
+        </div>
+
+        <form id="ministage-form" class="booking-form" hidden>
+          <div class="form-heading">
+            <span class="step-number">01</span>
+            <div><h3>Scegli il mini stage</h3><p>Seleziona la data che preferisci.</p></div>
+          </div>
+          <div id="ministage-list" class="choice-grid ministage-grid"></div>
+
+          <div class="form-heading form-heading-spaced">
+            <span class="step-number">02</span>
+            <div><h3>I tuoi dati</h3><p>Ci aiuteranno a preparare al meglio la visita.</p></div>
+          </div>
+          <div class="form-grid">
+            <label>Nome
+              <input name="firstName" autocomplete="given-name" maxlength="80" placeholder="Il tuo nome" required>
+            </label>
+            <label>Cognome
+              <input name="lastName" autocomplete="family-name" maxlength="80" placeholder="Il tuo cognome" required>
+            </label>
+            <label class="full-width">Scuola di provenienza
+              <input name="school" autocomplete="organization" maxlength="120" placeholder="Nome della scuola" required>
+            </label>
+            <label class="full-width">Email
+              <input name="email" type="email" autocomplete="email" maxlength="120" placeholder="La mail a cui riceverai il codice" required>
+            </label>
+          </div>
+
+          <div id="ministage-message-form" class="form-message" role="status" aria-live="polite" hidden></div>
+          <button class="submit-button" type="submit"><span>Conferma l'iscrizione</span><span aria-hidden="true">↗</span></button>
+          <p class="privacy-note">I dati saranno utilizzati esclusivamente per organizzare i mini stage.</p>
+        </form>
+        <p id="ministage-empty" class="empty-state" hidden>Al momento non ci sono mini stage aperti alle iscrizioni. Torna a trovarci presto!</p>
+        <div id="ministage-message" class="form-message" role="status" aria-live="polite" hidden></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Ci vediamo presto. <strong>Il tuo futuro è in buone mani.</strong></span>
+      <span>OPEN DAY · MINI STAGE</span>
+    </footer>
+  </body>
+</html>
