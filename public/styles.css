@@ -514,7 +514,7 @@ select:disabled { color: #9ca3af; }
   .section-heading { display: block; }
   .section-aside { margin-top: 10px; max-width: none; }
   .form-grid, .choice-grid { margin-left: 0; }
-  .site-footer { font-size: 11px; }
+  .site-footer { font-size: 11px; text-align: center; }
   .hero { flex-direction: column; }
   .hero-image { width: 100%; max-width: none; height: 280px; align-self: auto; object-position: center 35%; }
   .countdown-unit { min-width: 58px; padding: 8px 6px; }
@@ -564,3 +564,6 @@ select:disabled { color: #9ca3af; }
 
 .ministage-grid .choice-card:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); }
 @media (max-width: 760px) { .ministage-grid .choice-card:last-child:nth-child(odd) { width: 100%; } }
+
+.home-closing { margin: 22px 0 0; color: var(--muted); font-size: 15px; font-style: italic; text-align: center; }
+.home-closing strong { color: var(--indigo-dark); font-style: normal; }
