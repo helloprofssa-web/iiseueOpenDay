@@ -52,8 +52,15 @@
             <label>Titolo
               <input name="title" maxlength="120" placeholder="Es. Laboratorio di informatica" required>
             </label>
-            <label>Data e ora
+            <label>Primo giorno e ora di inizio
               <input name="startsAt" type="datetime-local" required>
+            </label>
+            <label>Ora di fine
+              <input name="endTime" type="time">
+            </label>
+            <label>Ultimo giorno (facoltativo)
+              <input name="lastDay" type="date">
+              <small>Se indicato, crea un mini stage per ogni giorno feriale, dal primo all'ultimo giorno.</small>
             </label>
             <label>Posti disponibili
               <input name="capacity" type="number" min="1" max="1000" value="20" required>

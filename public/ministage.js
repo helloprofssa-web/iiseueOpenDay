@@ -26,8 +26,10 @@ function showMessage(element, text, type, code = "") {
   element.hidden = false;
 }
 
-function formatDate(value) {
-  return new Intl.DateTimeFormat("it-IT", { dateStyle: "full", timeStyle: "short" }).format(new Date(value));
+function formatDate(value, endsAt) {
+  const day = new Intl.DateTimeFormat("it-IT", { dateStyle: "full" }).format(new Date(value));
+  const time = (v) => new Intl.DateTimeFormat("it-IT", { timeStyle: "short" }).format(new Date(v));
+  return endsAt ? `${day}, ore ${time(value)} - ${time(endsAt)}` : `${day}, ore ${time(value)}`;
 }
 
 function renderMinistages(ministages) {
@@ -51,7 +53,7 @@ function renderMinistages(ministages) {
     const title = document.createElement("strong");
     title.textContent = item.title;
     text.append(title);
-    const details = [formatDate(item.startsAt), item.location, item.description].filter(Boolean);
+    const details = [formatDate(item.startsAt, item.endsAt), item.location, item.description].filter(Boolean);
     for (const detail of details) {
       const small = document.createElement("small");
       small.textContent = detail;

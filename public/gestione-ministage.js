@@ -77,7 +77,7 @@ function renderList() {
     meta.className = "reservation-meta";
     for (const text of [
       `Open Day ${schoolNames[item.schoolType]}`,
-      formatDate(item.startsAt),
+      item.endsAt ? `${formatDate(item.startsAt)} - ${new Intl.DateTimeFormat("it-IT", { timeStyle: "short" }).format(new Date(item.endsAt))}` : formatDate(item.startsAt),
       item.location,
       `${item.booked} / ${item.capacity} iscritti`,
     ].filter(Boolean)) {
@@ -143,6 +143,8 @@ function startEdit(item) {
   adminForm.elements.schoolType.value = item.schoolType;
   adminForm.elements.title.value = item.title;
   adminForm.elements.startsAt.value = toLocalInput(item.startsAt);
+  adminForm.elements.endTime.value = item.endsAt ? toLocalInput(item.endsAt).slice(11) : "";
+  adminForm.elements.lastDay.value = "";
   adminForm.elements.capacity.value = item.capacity;
   adminForm.elements.location.value = item.location;
   adminForm.elements.description.value = item.description;
@@ -176,23 +178,47 @@ async function removeReservation(reservation) {
 adminForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const values = Object.fromEntries(new FormData(adminForm));
-  const payload = {
-    ...values,
+  const base = {
+    schoolType: values.schoolType,
     title: values.title.trim(),
     description: values.description.trim(),
     location: values.location.trim(),
-    startsAt: new Date(values.startsAt).toISOString(),
     capacity: Number(values.capacity),
   };
+  const [startDate, startTime] = values.startsAt.split("T");
+  const at = (date, time) => new Date(`${date}T${time}`).toISOString();
+  const days = [];
+  if (editingId || !values.lastDay) {
+    days.push(startDate);
+  } else {
+    for (let day = new Date(`${startDate}T12:00`); day <= new Date(`${values.lastDay}T12:00`); day.setDate(day.getDate() + 1)) {
+      if (day.getDay() !== 0 && day.getDay() !== 6) days.push(day.toLocaleDateString("sv-SE"));
+    }
+    if (days.length === 0 || days.length > 31) {
+      setMessage(adminMessage, "Controlla il primo e l'ultimo giorno.");
+      return;
+    }
+  }
   try {
-    await api(editingId ? `/api/admin/ministages/${encodeURIComponent(editingId)}` : "/api/admin/ministages", {
-      method: editingId ? "PUT" : "POST",
-      body: JSON.stringify(payload),
-    });
+    for (const date of days) {
+      const payload = {
+        ...base,
+        startsAt: at(date, startTime),
+        endsAt: values.endTime ? at(date, values.endTime) : null,
+      };
+      await api(editingId ? `/api/admin/ministages/${encodeURIComponent(editingId)}` : "/api/admin/ministages", {
+        method: editingId ? "PUT" : "POST",
+        body: JSON.stringify(payload),
+      });
+    }
     const wasEditing = Boolean(editingId);
     resetForm();
     await load();
-    setMessage(adminMessage, wasEditing ? "Mini stage aggiornato." : "Mini stage aggiunto.", "success");
+    setMessage(
+      adminMessage,
+      wasEditing ? "Mini stage aggiornato." : days.length > 1 ? `Aggiunti ${days.length} mini stage.` : "Mini stage aggiunto.",
+      "success",
+    );
   } catch (error) {
     setMessage(adminMessage, error.message);
   }

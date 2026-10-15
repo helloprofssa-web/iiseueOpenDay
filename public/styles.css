@@ -554,7 +554,7 @@ select:disabled { color: #9ca3af; }
 .home-card-cta { align-self: flex-start; margin-top: auto; }
 .home-card { text-align: center; }
 .home-card .hero-image { width: 100%; max-width: 260px; height: 200px; align-self: center; object-fit: contain; object-position: center; }
-.home-card .eyebrowHome { margin: 0; text-align: center; }
+.home-card .eyebrowHome { margin: 0; text-align: center; font-size: 16px; font-weight: 600; }
 .home-card-cta { align-self: center; }
 .ministage-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 12px; }
 .ministage-links .submit-button, .ministage-banner .submit-button { display: inline-flex; width: auto; text-decoration: none; }
