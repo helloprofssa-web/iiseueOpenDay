@@ -5,6 +5,11 @@ const form = document.querySelector("#ministage-form");
 const list = document.querySelector("#ministage-list");
 const pageMessage = document.querySelector("#ministage-message");
 const formMessage = document.querySelector("#ministage-message-form");
+for (const group of document.querySelectorAll("[data-programs]")) {
+  const active = group.dataset.programs === school;
+  group.hidden = !active;
+  for (const input of group.querySelectorAll("input")) input.disabled = !active;
+}
 
 const logo = document.querySelector("#ministage-logo");
 logo.src = school === "tecnico" ? "/img/TecnicoLogo.png" : "/img/LiceoLogo.png";

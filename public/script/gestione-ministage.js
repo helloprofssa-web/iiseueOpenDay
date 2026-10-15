@@ -6,6 +6,12 @@ const adminMessage = document.querySelector("#ministage-admin-message");
 const listContainer = document.querySelector("#ministage-admin-list");
 const keyStorageName = "open-day-admin-key";
 const schoolNames = { liceo: "Liceo", tecnico: "Tecnico" };
+const programNames = {
+  tradizionale: "Liceo scientifico tradizionale",
+  applicate: "Liceo scienze applicate",
+  afm: "AFM/SIA",
+  turismo: "Turismo",
+};
 let adminKey = "";
 let state = { ministages: [], reservations: [] };
 
@@ -81,7 +87,6 @@ function renderList() {
     const actions = document.createElement("div");
     actions.className = "reservation-actions";
     actions.append(
-      button("Esporta email", "text-button", () => exportEmails(`email-${item.title}`, (r) => r.ministageId === item.id)),
     );
 
     const attendees = document.createElement("div");
@@ -94,7 +99,7 @@ function renderList() {
       const name = document.createElement("h3");
       name.textContent = `${reservation.lastName} ${reservation.firstName}`;
       const detail = document.createElement("p");
-      detail.textContent = `${reservation.school} · ${reservation.email} · ${reservation.code}`;
+      detail.textContent = [reservation.school, reservation.email, programNames[reservation.program], reservation.code].filter(Boolean).join(" · ");
       info.append(name, detail);
       const rowActions = document.createElement("div");
       rowActions.className = "reservation-actions";
@@ -144,7 +149,7 @@ document.querySelector("#admin-logout").addEventListener("click", () => {
 });
 
 function exportXlsx(schoolType) {
-  const rows = [["Mini stage", "Data", "Cognome", "Nome", "Scuola di provenienza", "Email", "Open Day", "Codice", "Iscritto il"]];
+  const rows = [["Mini stage", "Data", "Cognome", "Nome", "Scuola di provenienza", "Email", "Indirizzo", "Open Day", "Codice", "Iscritto il"]];
   const byId = new Map(state.ministages.map((item) => [item.id, item]));
   const entries = state.reservations
     .map((reservation) => ({ reservation, ministage: byId.get(reservation.ministageId) }))
@@ -155,7 +160,7 @@ function exportXlsx(schoolType) {
   for (const { reservation, ministage } of entries) {
     rows.push([
       ministage.title, formatDate(ministage.startsAt), reservation.lastName, reservation.firstName,
-      reservation.school, reservation.email, schoolNames[schoolType], reservation.code, formatDate(reservation.createdAt),
+      reservation.school, reservation.email, programNames[reservation.program] || "", schoolNames[schoolType], reservation.code, formatDate(reservation.createdAt),
     ]);
   }
   const url = URL.createObjectURL(window.buildXlsx(rows));
@@ -166,27 +171,6 @@ function exportXlsx(schoolType) {
   URL.revokeObjectURL(url);
 }
 
-function exportEmails(name, filter) {
-  const emails = [...new Set(state.reservations.filter(filter).map((r) => r.email.toLowerCase()))].sort();
-  if (emails.length === 0) {
-    setMessage(adminMessage, "Non ci sono email da esportare.");
-    return;
-  }
-  const url = URL.createObjectURL(window.buildXlsx([["Email"], ...emails.map((email) => [email])]));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${name.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-${new Date().toISOString().slice(0, 10)}.xlsx`;
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
-function exportSchoolEmails(schoolType) {
-  const ids = new Set(state.ministages.filter((m) => m.schoolType === schoolType).map((m) => m.id));
-  exportEmails(`email-ministage-${schoolType}`, (r) => ids.has(r.ministageId));
-}
-
-document.querySelector("#export-emails-liceo").addEventListener("click", () => exportSchoolEmails("liceo"));
-document.querySelector("#export-emails-tecnico").addEventListener("click", () => exportSchoolEmails("tecnico"));
 document.querySelector("#export-ministage-liceo").addEventListener("click", () => exportXlsx("liceo"));
 document.querySelector("#export-ministage-tecnico").addEventListener("click", () => exportXlsx("tecnico"));
 

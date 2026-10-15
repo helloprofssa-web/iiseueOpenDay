@@ -247,15 +247,20 @@ test("mini stage: giornate fisse, iscrizione, doppione e annullamento", async ()
   assert.ok(tecnico.every((item) => item.schoolType === "tecnico" && new Date(item.startsAt) > new Date()));
   assert.equal(tecnico.find((item) => item.id === id).available, 20);
 
-  const student = { ministageId: id, firstName: "Ada", lastName: "Rossi", school: "Media", email: "ada.ms@example.com" };
+  const student = { ministageId: id, program: "turismo", firstName: "Ada", lastName: "Rossi", school: "Media", email: "ada.ms@example.com" };
   let response = await json("POST", "/api/ministages", student, {});
   assert.equal(response.status, 201);
   const { code } = await response.json();
   assert.equal((await json("POST", "/api/ministages", student, {})).status, 409);
+  const otherDay = { ...student, ministageId: "tecnico-2026-11-17" };
+  assert.equal((await json("POST", "/api/ministages", otherDay, {})).status, 409);
+  assert.equal((await json("POST", "/api/ministages", { ...otherDay, email: "x@example.com", program: "tradizionale" }, {})).status, 400);
+  assert.equal((await json("POST", "/api/ministages", { ...otherDay, email: "x@example.com", program: undefined }, {})).status, 400);
   assert.equal((await json("GET", "/api/admin/ministages", undefined, {})).status, 401);
 
   const overview = await (await json("GET", "/api/admin/ministages")).json();
   assert.equal(overview.reservations.length, 1);
+  assert.equal(overview.reservations[0].program, "turismo");
   assert.equal((await listFor("tecnico")).find((item) => item.id === id).available, 19);
 
   response = await json("POST", "/api/cancel", { code, email: student.email }, {});
